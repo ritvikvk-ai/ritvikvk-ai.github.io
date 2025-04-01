@@ -8,8 +8,13 @@
   <style>
     body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; padding-top: 60px; }
     .hero { background: #fff; padding: 60px 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
-    .section-title { margin-top: 40px; font-weight: 600; }
-    .project-card { background-color: #ffffff; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .section-title { margin-top: 40px; font-weight: 600; text-align: center; }
+    .project-card, .edu-card, .work-card { background-color: #ffffff; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; padding-left: 0; list-style-type: none; }
+    .skills-grid li { background-color: #ffffff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; }
+    .skills-grid strong { display: block; margin-bottom: 8px; font-size: 1.1em; }
+    .edu-card h5, .work-card h5 { margin-bottom: 5px; }
+    .edu-card p, .work-card p { margin: 0; font-size: 0.95rem; }
   </style>
 </head>
 <body>
@@ -25,36 +30,47 @@
     </div>
 
     <h2 class="section-title">Skills</h2>
-    <ul>
-      <li><strong>Programming:</strong> Python, Java, C++, SQL, C, HTML, CSS</li>
-      <li><strong>ML/AI Tools:</strong> TensorFlow, Keras, Scikit-Learn, PyTorch</li>
-      <li><strong>Data Analysis:</strong> Pandas, NumPy, Excel</li>
-      <li><strong>Developer Tools:</strong> VSCode, Git, AWS, MongoDB, Docker, Gradio, Hugging Face, Qdrant</li>
-      <li><strong>Soft Skills:</strong> Team Coordination, Analytical Thinking, Presentation, Innovation</li>
-    </ul>
+    <div class="text-center">
+      <ul class="skills-grid">
+        <li><strong>Programming</strong>Python, Java, C++, SQL, C, HTML, CSS</li>
+        <li><strong>ML/AI Tools</strong>TensorFlow, Keras, Scikit-Learn, PyTorch</li>
+        <li><strong>Data Analysis</strong>Pandas, NumPy, Excel</li>
+        <li><strong>Developer Tools</strong>VSCode, Git, AWS, MongoDB, Docker</li>
+        <li><strong>Model Deployment</strong>Gradio, Hugging Face, Qdrant</li>
+        <li><strong>Soft Skills</strong>Team Coordination, Analytical Thinking, Presentation, Innovation</li>
+      </ul>
+    </div>
 
     <h2 class="section-title">Education</h2>
-    <ul>
-      <li><strong>New York University</strong>, M.S. in Computer Science (May 2026, GPA: 3.7/4.0)<br>
-        Relevant Coursework: Machine Learning, Artificial Intelligence, Big Data, Deep Learning</li>
-      <li><strong>Visvesvaraya Technological University</strong>, B.E. in Computer Science and Engineering (CGPA: 8.89/10)<br>
-        Honors: Best Project Award for Image-to-Text Conversion System</li>
-    </ul>
+    <div class="edu-card">
+      <h5>New York University</h5>
+      <p><em>M.S. in Computer Science</em> &nbsp; | &nbsp; <strong>May 2026</strong> &nbsp; | &nbsp; GPA: 3.7/4.0</p>
+      <p><strong>Relevant Coursework:</strong> Machine Learning, Artificial Intelligence, Big Data, Deep Learning</p>
+    </div>
+    <div class="edu-card">
+      <h5>Visvesvaraya Technological University</h5>
+      <p><em>B.E. in Computer Science and Engineering</em> &nbsp; | &nbsp; CGPA: 8.89/10</p>
+      <p><strong>Honors:</strong> Best Project Award for Image-to-Text Conversion System</p>
+    </div>
 
     <h2 class="section-title">Work Experience</h2>
-    <div class="project-card">
-      <h5>Machine Learning Researcher – AI4CE Lab, NYU (Jan 2025 – Present)</h5>
+    <div class="work-card">
+      <h5>AI4CE Lab, New York University</h5>
+      <p><em>Machine Learning Researcher</em> &nbsp; | &nbsp; <strong>Jan 2025 – Present</strong> &nbsp; | &nbsp; New York, NY</p>
       <ul>
-        <li>Developed SeqNet-based Visual Place Recognition models that improved location accuracy by 25% in robotics applications.</li>
+        <li>Engineered innovative Visual Place Recognition models through SeqNet, improving hierarchical place recognition
+accuracy by 25% in robotics applications via advanced sequential descriptor integration and rigorous testing.</li>
         <li>Enhanced performance of BEVFormer architecture, resulting in a 17% increase in operational metrics for autonomous navigation systems.</li>
         <li>Curated and optimized multi-camera, multimodal datasets to improve scene understanding, localization, and robotic path planning.</li>
       </ul>
     </div>
-    <div class="project-card">
-      <h5>IT Intern – Rotana PJSC, UAE (May 2019 – Jun 2019)</h5>
+    <div class="work-card">
+      <h5>Rotana Management PJSC</h5>
+      <p><em>IT Intern</em> &nbsp; | &nbsp; <strong>May 2019 – Jun 2019</strong> &nbsp; | &nbsp; Ras Al Khaimah, UAE</p>
       <ul>
         <li>Diagnosed and resolved frequent network issues, reducing operational downtime by 27%.</li>
         <li>Maintained critical network infrastructure, increasing reliability and overall efficiency by 15%.</li>
+        <li>Supported core network infrastructure, reducing downtime by 19% and boosting reliability.</li>
       </ul>
     </div>
 
