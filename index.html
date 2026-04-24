@@ -69,7 +69,13 @@ nav {
   border-bottom: 0.5px solid var(--bdr);
 }
 
-.nav-logo { font-size: 13px; font-weight: 600; color: var(--s-acc); letter-spacing: 0.5px; }
+.nav-logo {
+  font-size: 13px; font-weight: 600; color: var(--s-acc); letter-spacing: 0.5px;
+  cursor: pointer; background: none; border: none; font-family: var(--mono);
+  padding: 0; text-decoration: none; display: inline-block;
+  transition: opacity 0.2s;
+}
+.nav-logo:hover { opacity: 0.75; }
 .nav-logo span { color: var(--text-di); font-weight: 400; }
 
 .nav-links { display: flex; gap: 36px; list-style: none; }
@@ -215,8 +221,8 @@ section {
   animation: runRight 2.4s 1.8s infinite ease-in-out;
 }
 
-.about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 80px; align-items: start; }
-.about-body p { font-size: 13px; color: var(--text-mu); line-height: 1.95; margin-bottom: 18px; }
+.about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 80px; align-items: center; }
+.about-body p { font-size: 14px; color: var(--text-mu); line-height: 1.95; margin-bottom: 18px; }
 .about-body p:last-of-type { margin-bottom: 0; }
 .about-body strong { color: var(--text); font-weight: 500; }
 .about-links { display: flex; gap: 16px; margin-top: 30px; flex-wrap: wrap; }
@@ -233,6 +239,7 @@ section {
   border: 0.5px solid var(--bdr);
   border-radius: 6px;
   padding: 22px 20px;
+  text-align: center;
   transition: border-color 0.25s, background 0.25s;
 }
 .stat:hover { background: var(--card-hi); border-color: var(--bdr-hi); }
@@ -244,8 +251,7 @@ section {
 }
 .stat-lbl { font-size: 10px; color: var(--text-mu); letter-spacing: 1.5px; }
 
-.skills-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; }
-.skills-sub { font-size: 10px; color: var(--text-di); letter-spacing: 2px; }
+.skills-hd { display: flex; justify-content: flex-start; align-items: flex-end; margin-bottom: 52px; }
 
 .spec-list { display: flex; flex-direction: column; max-width: 860px; }
 .spec-row {
@@ -255,8 +261,8 @@ section {
   border-bottom: 0.5px solid var(--bdr);
 }
 .spec-row:last-child { border-bottom: none; }
-.spec-cat { font-size: 11px; font-weight: 500; letter-spacing: 0.8px; width: 150px; flex-shrink: 0; }
-.spec-skills { font-size: 12px; color: var(--text-mu); line-height: 1.75; }
+.spec-cat { font-size: 12px; font-weight: 500; letter-spacing: 0.8px; width: 150px; flex-shrink: 0; }
+.spec-skills { font-size: 14px; color: var(--text-mu); line-height: 1.75; }
 
 .proj-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
 .proj-card {
@@ -285,10 +291,10 @@ section {
   font-family: var(--disp); font-size: 19px; font-weight: 700;
   color: var(--text-hi); letter-spacing: -0.5px; margin-bottom: 10px; line-height: 1.2;
 }
-.proj-card p { font-size: 12px; color: var(--text-mu); line-height: 1.85; margin-bottom: 20px; flex: 1; }
+.proj-card p { font-size: 13px; color: var(--text-mu); line-height: 1.85; margin-bottom: 20px; flex: 1; }
 .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
 .ptag {
-  font-size: 10px; color: var(--text-mu);
+  font-size: 11px; color: var(--text-mu);
   background: rgba(255,255,255,0.04);
   border: 0.5px solid var(--bdr);
   padding: 3px 8px; border-radius: 2px;
@@ -314,8 +320,8 @@ section {
 }
 .edu-yr { font-size: 10px; color: var(--s-acc); letter-spacing: 2px; margin-bottom: 10px; }
 .edu-degree { font-family: var(--disp); font-size: 22px; font-weight: 700; color: var(--text-hi); letter-spacing: -0.5px; margin-bottom: 4px; }
-.edu-school { font-size: 13px; color: var(--text-mu); margin-bottom: 12px; }
-.edu-body { font-size: 12px; color: var(--text-di); line-height: 1.85; max-width: 580px; margin-bottom: 12px; }
+.edu-school { font-size: 14px; color: var(--text-mu); margin-bottom: 12px; }
+.edu-body { font-size: 13px; color: var(--text-di); line-height: 1.85; max-width: 580px; margin-bottom: 12px; }
 .edu-gpa {
   display: inline-block; font-size: 10px; color: var(--s-acc);
   background: var(--acc-lo); border: 0.5px solid var(--acc-mid);
@@ -386,7 +392,7 @@ footer {
 <div id="tip"></div>
 
 <nav id="main-nav">
-  <div class="nav-logo">rv<span>.ai</span></div>
+  <button class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">rv<span>.ai</span></button>
   <ul class="nav-links">
     <li><a href="#about">about</a></li>
     <li><a href="#skills">skills</a></li>
@@ -407,7 +413,7 @@ footer {
     </p>
     <div class="hero-btns">
       <a href="#projects" class="btn btn-fill">view_projects()&thinsp;&rarr;</a>
-      <a href="/resume.pdf" target="_blank" rel="noopener" class="btn btn-line">resume.pdf&thinsp;&darr;</a>
+      <a href="/RitvikVK-resume.pdf" target="_blank" rel="noopener" class="btn btn-line">resume.pdf&thinsp;&darr;</a>
       <a href="https://github.com/ritvikvk-ai" target="_blank" rel="noopener" class="btn btn-line">github&thinsp;&nearr;</a>
       <a href="https://linkedin.com/in/ritvik-vk" target="_blank" rel="noopener" class="btn btn-line">linkedin&thinsp;&nearr;</a>
     </div>
@@ -421,7 +427,7 @@ footer {
     <div class="about-body reveal">
       <div class="s-title" style="margin-bottom:28px;">Building at<br>the frontier.</div>
       <p>I'm a Master's student in Computer Science at <strong>NYU Tandon School of Engineering</strong>, specializing in AI, machine learning, and generative systems. My work lives at the intersection of applied AI research and real-world product engineering.</p>
-      <p>I've built <strong>agentic coding assistants</strong>, <strong>multimodal story engines</strong>, <strong>RAG pipelines for robotics</strong>, and fraud detection systems &mdash; always connecting cutting-edge models to usable, deployable software that solves real problems.</p>
+      <p>I've built <strong>agentic coding assistants</strong>, <strong>multimodal story engines</strong>, <strong>RAG pipelines for robotics</strong>, and fraud detection systems, always connecting cutting-edge models to usable, deployable software that solves real problems.</p>
       <p>Currently exploring multi-agent systems, LLM orchestration, and cloud-native AI deployment. Open to AI Engineer, ML Engineer, and Applied AI roles.</p>
       <div class="about-links">
         <a href="mailto:rv2459@nyu.edu" class="a-link">rv2459@nyu.edu</a>
@@ -442,7 +448,6 @@ footer {
   <div class="s-label">02 &middot; TECHNICAL LATTICE</div>
   <div class="skills-hd reveal">
     <div class="s-title">Skill<br>Spectrum</div>
-    <div class="skills-sub">TECH SPECS FORMAT</div>
   </div>
   <div class="spec-list reveal d1">
     <div class="spec-row">
@@ -476,7 +481,7 @@ footer {
     <div class="proj-card reveal">
       <div class="proj-badge">HOF CAPITAL HACKS</div>
       <h3>Agentic AI Code Assistant</h3>
-      <p>Multi-agent system automating the full software development lifecycle &mdash; code research, generation, review, testing, and security analysis. Specialized agent roles communicate via structured LangGraph handoffs, with Anthropic LLMs and GitHub MCP orchestrating the workflow end-to-end.</p>
+      <p>Multi-agent system automating the full software development lifecycle: code research, generation, review, testing, and security analysis. Specialized agent roles communicate via structured LangGraph handoffs, with Anthropic LLMs and GitHub MCP orchestrating the workflow end-to-end.</p>
       <div class="proj-tags">
         <span class="ptag">LangGraph</span><span class="ptag">Anthropic LLMs</span><span class="ptag">GitHub MCP</span><span class="ptag">Docker</span><span class="ptag">CI/CD</span><span class="ptag">Multi-Agent</span>
       </div>
@@ -485,7 +490,7 @@ footer {
 
     <div class="proj-card reveal d1">
       <div class="proj-badge">NYU GOOGLE GEMINI HACKATHON</div>
-      <h3>LORE &mdash; Multimodal Story Engine</h3>
+      <h3>LORE: Multimodal Story Engine</h3>
       <p>AI story engine generating synchronized text, image, and voice content using Gemini 2.5 Pro and Google ADK. Features agent-to-agent pipelines for coordinated multimodal generation with context-aware narrative branching and real-time voice I/O via the Gemini Live API.</p>
       <div class="proj-tags">
         <span class="ptag">Gemini 2.5 Pro</span><span class="ptag">Google ADK</span><span class="ptag">Vertex AI</span><span class="ptag">FastAPI</span><span class="ptag">React</span><span class="ptag">Multimodal AI</span>
@@ -506,7 +511,7 @@ footer {
     <div class="proj-card reveal d1">
       <div class="proj-badge">MICROSOFT HACK NIGHT 2025</div>
       <h3>Weaviate RAG Chatbot</h3>
-      <p>Enterprise knowledge assistant using Retrieval-Augmented Generation with Weaviate as the vector backbone. End-to-end pipeline covering document ingestion, embedding-based retrieval, and context-grounded LLM response generation &mdash; minimising hallucination for domain-specific QA at scale.</p>
+      <p>Enterprise knowledge assistant using Retrieval-Augmented Generation with Weaviate as the vector backbone. End-to-end pipeline covering document ingestion, embedding-based retrieval, and context-grounded LLM response generation, designed to minimise hallucination for domain-specific QA at scale.</p>
       <div class="proj-tags">
         <span class="ptag">RAG</span><span class="ptag">Weaviate</span><span class="ptag">Vector Search</span><span class="ptag">LLM</span><span class="ptag">FastAPI</span><span class="ptag">Enterprise AI</span>
       </div>
@@ -515,7 +520,7 @@ footer {
     <div class="proj-card reveal">
       <div class="proj-badge">FINANCIAL ML</div>
       <h3>Insider Trading Detection</h3>
-      <p>LSTM-based sequence model detecting suspicious trading patterns in large-scale financial datasets. Built with Keras and TensorFlow, processing sequential market records to flag anomalous activity &mdash; ~85% detection accuracy applied to compliance and market surveillance use cases.</p>
+      <p>LSTM-based sequence model detecting suspicious trading patterns in large-scale financial datasets. Built with Keras and TensorFlow, processing sequential market records to flag anomalous activity, achieving approximately 85% detection accuracy in compliance and market surveillance use cases.</p>
       <div class="proj-tags">
         <span class="ptag">LSTM</span><span class="ptag">TensorFlow</span><span class="ptag">Keras</span><span class="ptag">Sequence Modeling</span><span class="ptag">Financial AI</span>
       </div>
@@ -524,7 +529,7 @@ footer {
     <div class="proj-card reveal d1">
       <div class="proj-badge">BEST PROJECT OF THE YEAR</div>
       <h3>Image-to-Text Conversion</h3>
-      <p>Deep learning image captioning pipeline combining Inception-v3 for visual feature extraction with LSTM-based sequence generation for natural language output. ~95% accuracy in evaluation &mdash; awarded Best Project of the Year.</p>
+      <p>Deep learning image captioning pipeline combining Inception-v3 for visual feature extraction with LSTM-based sequence generation for natural language output. Achieved approximately 95% accuracy in evaluation and was awarded Best Project of the Year.</p>
       <div class="proj-tags">
         <span class="ptag">Inception-v3</span><span class="ptag">LSTM</span><span class="ptag">Computer Vision</span><span class="ptag">Seq2Seq</span><span class="ptag">PyTorch</span>
       </div>
@@ -538,7 +543,7 @@ footer {
   <div class="s-title reveal" style="margin-bottom:52px;">Academic<br>Path</div>
   <div class="edu-line reveal d1">
     <div class="edu-item">
-      <div class="edu-yr">SEP 2024 &mdash; MAY 2026 (EXPECTED)</div>
+      <div class="edu-yr">SEP 2024 - MAY 2026 (EXPECTED)</div>
       <div class="edu-degree">New York University</div>
       <div class="edu-school">Tandon School of Engineering &nbsp;&middot;&nbsp; Master of Science in Computer Science &nbsp;&middot;&nbsp; New York, NY</div>
       <div class="edu-body">Machine learning &middot; artificial intelligence &middot; deep learning &middot; algorithms &middot; database systems &middot; robotics AI &middot; cloud-based AI systems.</div>
@@ -546,7 +551,7 @@ footer {
     </div>
     <div class="edu-item">
       <div class="edu-yr">GRADUATED</div>
-      <div class="edu-degree">NMAM Institute of Technology &mdash; VTU</div>
+      <div class="edu-degree">NMAM Institute of Technology, VTU</div>
       <div class="edu-school">Visvesvaraya Technological University &nbsp;&middot;&nbsp; Bachelor of Engineering in Computer Science &nbsp;&middot;&nbsp; Karnataka, India</div>
       <div class="edu-body">ML &middot; NLP &middot; cybersecurity &middot; big data analytics &middot; computer architecture &middot; data structures &middot; software development.</div>
       <div class="edu-gpa">CGPA: 8.89 / 10</div>
@@ -563,7 +568,7 @@ footer {
     <a href="mailto:rv2459@nyu.edu" class="c-link">&#x2709;&nbsp; rv2459@nyu.edu</a>
     <a href="https://linkedin.com/in/ritvik-vk" target="_blank" rel="noopener" class="c-link">in&nbsp; linkedin&thinsp;&nearr;</a>
     <a href="https://github.com/ritvikvk-ai" target="_blank" rel="noopener" class="c-link">{ }&nbsp; github&thinsp;&nearr;</a>
-    <a href="/resume.pdf" target="_blank" rel="noopener" class="c-link">&darr;&nbsp; resume.pdf</a>
+    <a href="/RitvikVK-resume.pdf" target="_blank" rel="noopener" class="c-link">&darr;&nbsp; resume.pdf</a>
   </div>
 </section>
 
@@ -577,12 +582,12 @@ footer {
    COLOR PALETTE PER SECTION
 ═══════════════════════════════════════ */
 const STOPS = [
-  { id:'hero',      bg:[4,8,18],    pt:[100,136,255], ar:100,ag:136,ab:255 },
-  { id:'about',     bg:[4,15,12],   pt:[40,200,160],  ar:40, ag:200,ab:160 },
-  { id:'skills',    bg:[15,10,4],   pt:[220,150,60],  ar:220,ag:150,ab:60  },
-  { id:'projects',  bg:[12,4,15],   pt:[180,80,220],  ar:180,ag:80, ab:220 },
-  { id:'education', bg:[4,8,20],    pt:[80,120,240],  ar:80, ag:120,ab:240 },
-  { id:'contact',   bg:[4,6,20],    pt:[100,120,255], ar:100,ag:120,ab:255 },
+  { id:'hero',      bg:[4,8,18],    pt:[100,130,255], ar:100,ag:130,ab:255 },
+  { id:'about',     bg:[5,9,20],    pt:[80,160,220],  ar:80, ag:160,ab:220 },
+  { id:'skills',    bg:[5,10,18],   pt:[70,180,200],  ar:70, ag:180,ab:200 },
+  { id:'projects',  bg:[8,6,20],    pt:[120,100,240], ar:120,ag:100,ab:240 },
+  { id:'education', bg:[6,7,20],    pt:[90,130,250],  ar:90, ag:130,ab:250 },
+  { id:'contact',   bg:[4,7,20],    pt:[100,120,255], ar:100,ag:120,ab:255 },
 ];
 
 function lerp(a,b,t){ return a+(b-a)*t; }
