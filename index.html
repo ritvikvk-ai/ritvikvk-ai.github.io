@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="booting">
+<html lang="en" class="booting" data-hero="terrain" data-panel="system">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,8 +36,6 @@
 
 <div class="amb" aria-hidden="true"></div>
 <div class="glow" id="glow" aria-hidden="true"></div>
-<div class="cur" id="cur" aria-hidden="true"></div>
-<div class="ring" id="ring" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
 
 <header id="hdr">
   <div class="hd">
@@ -59,16 +57,16 @@
 <div class="wrap">
 
 <section id="hero" data-name="home">
-  <canvas id="lidar" aria-hidden="true"></canvas>
+  <canvas id="herobg" aria-hidden="true"></canvas>
   <div class="hero">
     <div>
       <h1 class="name" id="name" aria-label="Ritvik Vasantha Kumar">
-        <span class="det" data-l="ritvik · 0.99" style="--c:var(--lime)"><span class="tx">Ritvik</span></span>
-        <span class="det" data-l="vasantha · 0.97" style="--c:var(--cyan)"><span class="tx">Vasantha</span></span>
-        <span class="det" data-l="kumar · 0.98" style="--c:var(--amber)"><span class="tx">Kumar</span></span>
+        <span class="det"><span class="tx">Ritvik</span></span>
+        <span class="det"><span class="tx hl">Vasantha</span></span>
+        <span class="det"><span class="tx">Kumar</span></span>
       </h1>
       <div class="role h-in">&gt; role = "<b id="role"></b><span class="c"></span>"</div>
-      <p class="lead h-in"><strong>MS Computer Science @ NYU.</strong> I build systems that see, reason and act: multi-agent LLM workflows, generative AI, perception pipelines and cloud-native ML.</p>
+      <p class="lead h-in"><strong>MS Computer Science @ NYU.</strong> I build software that sees, reasons and acts: multi-agent LLM workflows, perception pipelines and generative AI, plus the APIs, infra and CI/CD that ship them.</p>
       <div class="cta h-in">
         <a class="btn p mag" href="#projects" data-cur="scroll"><span>view work →</span></a>
         <a class="btn mag" href="https://github.com/ritvikvk-ai" target="_blank" rel="noopener" data-cur="open ↗"><span>github ↗</span></a>
@@ -78,11 +76,8 @@
       <div class="hint h-in">tip: press <kbd>⌘</kbd> <kbd>K</kbd> to jump anywhere</div>
     </div>
     <div class="console h-in" id="console">
-      <div class="ch"><span class="d"><i></i><i></i><i></i></span>inference.py — cam_01<span class="st">running</span></div>
-      <div class="modes" id="modes" role="tablist" aria-label="Vision demo mode">
-        <button data-m="-1" class="on">auto</button><button data-m="0">detect</button><button data-m="1">segment</button><button data-m="2">track</button><button data-m="3">query</button>
-      </div>
-      <div class="frame"><canvas id="cv" aria-label="Animated computer vision demo"></canvas><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="fi" id="cvi">loading…</span></div>
+      <div class="ch"><span class="d"><i></i><i></i><i></i></span><span id="ptitle">workspace</span><span class="st">running</span></div>
+      <div class="panel" id="panel"></div>
       <div class="kpis" id="kpis"></div>
     </div>
   </div>
@@ -101,7 +96,7 @@
     <div class="card rv">
       <div class="ch"><span class="d"><i></i><i></i><i></i></span>git log --oneline --since=2024</div>
       <ul class="gl" id="gl">
-        <li><span class="h">f00dcv1</span><span><b>feat:</b> add computer vision stack<span class="new">NEW</span><br><span class="t">OWLv2 · SAM · RF-DETR · BEVFormer</span></span></li>
+        <li><span class="h">f00dcv1</span><span><b>feat:</b> add computer vision stack<br><span class="t">OWLv2 · SAM · RF-DETR · BEVFormer</span></span></li>
         <li><span class="h">a3f9c21</span><span><b>ship:</b> agentic code assistant<br><span class="t">HOF Capital Hacks</span></span></li>
         <li><span class="h">7be0d14</span><span><b>ship:</b> LORE multimodal engine<br><span class="t">NYU × Google Gemini Hackathon</span></span></li>
         <li><span class="h">19d2f7e</span><span><b>ship:</b> Weaviate RAG bot<br><span class="t">Microsoft Hack Night 2025</span></span></li>
@@ -114,21 +109,19 @@
 <div class="div"><b>02</b> skills<span class="ln"></span><span class="meta" id="m2"></span></div>
 <section id="skills" data-name="skills">
   <div class="sh"><h2 class="split">Skill stack.</h2>
-    <div class="view" role="tablist" aria-label="Skill view"><span class="pill" id="vpill"></span><button class="on" data-v="table" role="tab" aria-selected="true">table</button><button data-v="graph" role="tab" aria-selected="false">graph</button></div>
+    <p>// 6 areas · 55 tools</p>
   </div>
   <div class="tbl" id="tbl">
-    <div class="thd"><span></span><span>KEY</span><span>STACK</span><span>TREND</span></div>
+    <div class="thd"><span></span><span>AREA</span><span>TOOLS &amp; TECHNOLOGIES</span></div>
     <div id="sk"></div>
   </div>
-  <div class="graph" id="graph"><canvas id="gc" aria-label="Interactive graph of skills"></canvas><div class="gi" id="gi"><b>skill graph</b>hover a node · drag to rearrange</div><div class="gh">nodes = tools · hubs = areas · links = used together</div></div>
 </section>
 
-<div class="div"><b>03</b> work<span class="ln"></span><span class="meta">6 projects · scroll →</span></div>
+<div class="div"><b>03</b> work<span class="ln"></span><span class="meta">6 projects</span></div>
 <section id="projects" data-name="projects">
   <div class="pwrap" id="pwrap">
-    <div class="sh"><h2 class="split">Selected work.</h2><p>// hover a card to run detection on it</p></div>
+    <div class="sh"><h2 class="split">Selected work.</h2><p>// things I have built and shipped</p></div>
     <div class="ptrack" id="pt"></div>
-    <div class="pprog"><span id="pcount">01 / 06</span><span class="bar"><i id="pbar"></i></span><span>scroll</span></div>
   </div>
 </section>
 
@@ -142,7 +135,7 @@
 <section id="contact" data-name="contact">
   <div class="ct">
     <div>
-      <div class="big"><span class="det" id="lb" data-l="next_step · 1.00" style="--c:var(--lime)"><span class="tx" id="lbt">Let's build.</span></span></div>
+      <div class="big"><span class="det" id="lb"><span class="tx" id="lbt">Let's build.</span></span></div>
       <div class="sub2 rv">AI Engineer · ML Engineer · Computer Vision · Applied AI</div>
       <div class="cta rv">
         <a class="btn p mag" href="mailto:rv2459@nyu.edu" data-cur="mail"><span>rv2459@nyu.edu</span></a>
@@ -181,6 +174,8 @@
 <script src="assets/vendor/lenis.min.js" defer></script>
 <script src="assets/js/data.js" defer></script>
 <script src="assets/js/visuals.js" defer></script>
+<script src="assets/js/hero.js" defer></script>
+<script src="assets/js/panels.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 </body>
 </html>

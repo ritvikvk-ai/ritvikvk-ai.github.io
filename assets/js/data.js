@@ -5,11 +5,11 @@ window.RVK_DATA = {
     github: 'https://github.com/ritvikvk-ai',
     linkedin: 'https://linkedin.com/in/ritvik-vk'
   },
-  roles: ['AI Engineer', 'Computer Vision Engineer', 'ML Engineer', 'Multi-Agent Systems Builder', 'Applied AI'],
+  roles: ['AI Engineer', 'Software Engineer', 'Computer Vision Engineer', 'ML Engineer', 'Multi-Agent Systems Builder'],
   skills: [
     { k: 'ai_ml', n: 'AI / ML', sub: 'LLMs · deep learning', c: '#5ad8ff',
       items: ['PyTorch', 'TensorFlow', 'Keras', 'Scikit-Learn', 'LangGraph', 'RAG', 'LLaMA 3', 'Multi-Agent Systems', 'HuggingFace Transformers', 'Gemini API', 'Anthropic LLMs', 'Google ADK'] },
-    { k: 'computer_vision', n: 'Computer Vision', sub: 'perception', c: '#c8ff2e', isNew: true,
+    { k: 'computer_vision', n: 'Computer Vision', sub: 'perception', c: '#c8ff2e',
       items: ['OWLv2', 'SAM', 'RF-DETR', 'BEVFormer', 'OpenCV', 'FFmpeg', 'Instance Segmentation', 'Object Tracking'] },
     { k: 'cloud_mlops', n: 'Cloud & MLOps', sub: 'infra', c: '#ffb000',
       items: ['Azure', 'Azure OpenAI', 'GCP', 'Vertex AI', 'AWS', 'Docker', 'CI/CD', 'Databricks', 'ZenML', 'ClearML'] },
@@ -49,9 +49,9 @@ window.RVK_DATA = {
       tags: ['Inception-v3', 'LSTM', 'Computer Vision', 'PyTorch'], m: ['accuracy', '~95%'] }
   ],
   edu: [
-    { when: 'Sep 2024 — May 2026', school: 'New York University', sub: 'Tandon School of Engineering · MS Computer Science · New York, NY',
-      body: 'Machine learning · AI · deep learning · algorithms · database systems · robotics AI · cloud-based AI systems.', g: 'GPA 3.7 / 4.0', w: 92.5 },
+    { when: 'Graduated May 2026', school: 'New York University', sub: 'Tandon School of Engineering · MS Computer Science · New York, NY',
+      body: 'Machine learning · AI · deep learning · algorithms · database systems · robotics AI · cloud-based AI systems.', g: 'GPA 3.7 / 4.0' },
     { when: 'Graduated', school: 'NMAM Institute of Technology, VTU', sub: 'BE Computer Science · Karnataka, India',
-      body: 'ML · NLP · cybersecurity · big data analytics · computer architecture · data structures.', g: 'CGPA 8.89 / 10', w: 88.9 }
+      body: 'ML · NLP · cybersecurity · big data analytics · computer architecture · data structures.', g: 'CGPA 8.89 / 10' }
   ]
 };
