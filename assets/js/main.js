@@ -13,19 +13,18 @@
     `<div class="kpi"><div class="l">${l}</div><div class="v"><span data-n="${n}" data-d="${d}">0</span><small>${s}</small></div>${V.spark(V.walk(28, i * 31 + 5, dr), '#2fd67b', 120, 24)}</div>`).join('');
 
   $('#sk').innerHTML = D.skills.map((s, i) => {
-    const d = V.walk(30, i * 77 + 11, s.isNew ? 1.1 : .45);
-    return `<div class="srow ${s.isNew ? 'new' : ''}" style="--c:${s.c}"><span class="ln">${s.isNew ? '+' : ''}${i + 1}</span><span class="k">"${s.k}"<small>${s.sub} · ${s.items.length} items</small>${s.isNew ? '<span class="badge">NEW</span>' : ''}</span><div class="chips">${s.items.map(x => `<span>${x}</span>`).join('')}</div><div class="tz">${V.spark(d, s.isNew ? '#c8ff2e' : '#2fd67b')}<span class="up">▲ ${V.pct(d)}%</span></div></div>`;
+    const d = V.walk(30, i * 77 + 11, .45 + i * .08);
+    return `<div class="srow" style="--c:${s.c}"><span class="ln">${i + 1}</span><span class="k">"${s.k}"<small>${s.sub} · ${s.items.length} items</small></span><div class="chips">${s.items.map(x => `<span>${x}</span>`).join('')}</div><div class="tz">${V.spark(d, '#2fd67b')}<span class="up">▲ ${V.pct(d)}%</span></div></div>`;
   }).join('');
   $('#m2').textContent = D.skills.reduce((a, s) => a + s.items.length, 0) + ' tools indexed';
 
-  $('#pt').innerHTML = D.projects.map((p, i) => `<article class="pc"><div class="bb" data-l="${p.lbl} · ${p.conf.toFixed(2)}"></div>
+  $('#pt').innerHTML = D.projects.map((p, i) => `<article class="pc">
     <div class="thumb"><canvas data-viz="${p.viz}" aria-hidden="true"></canvas><span class="lbl">fig.${i + 1}</span></div>
     <div class="body"><div class="mt"><span class="h">${p.hash}</span><span>${p.org}</span></div><h3>${p.title}</h3><p>${p.desc}</p>
     <div class="tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>
-    <div class="ft"><span>${p.m[0]} <b>${p.m[1]}</b></span>${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" data-cur="repo ↗">repo ↗</a>` : '<span>private</span>'}</div></div></article>`).join('')
-    + `<div class="end"><b>More on GitHub.</b><span>Experiments, notebooks and half-finished ideas.</span><a class="btn mag" href="${D.links.github}" target="_blank" rel="noopener" data-cur="open ↗"><span>github.com/ritvikvk-ai ↗</span></a></div>`;
+    <div class="ft"><span>${p.m[0]} <b>${p.m[1]}</b></span>${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" data-cur="repo ↗">repo ↗</a>` : '<span>private</span>'}</div></div></article>`).join('');
 
-  $('#tl').insertAdjacentHTML('beforeend', D.edu.map((e, i) => `<div class="ti"><span class="dot"></span><div class="w">${i ? '' : 'HEAD → '}${e.when}</div><h3>${e.school}</h3><div class="s">${e.sub}</div><div class="b">${e.body}</div><div class="gb">${e.g}<span class="bar"><i data-w="${e.w}"></i></span></div></div>`).join(''));
+  $('#tl').insertAdjacentHTML('beforeend', D.edu.map((e, i) => `<div class="ti"><span class="dot"></span><div class="w">${e.when}</div><h3>${e.school}</h3><div class="s">${e.sub}</div><div class="b">${e.body}</div><div class="gpa">${e.g}</div></div>`).join(''));
 
   // ticker tape + marquee content (duplicated for seamless loop)
   (() => {
@@ -53,7 +52,6 @@
     if (reduce) return; const txt = el.textContent, ch = '▓▒░<>/_#01'; let f = 0;
     (function s() { el.textContent = [...txt].map((c, i) => c === ' ' || i < f / 2 ? c : ch[(Math.random() * ch.length) | 0]).join(''); if (f++ / 2 <= txt.length) requestAnimationFrame(s); else el.textContent = txt; })();
   }
-  function detect(el) { if (!el.querySelector('.box')) el.insertAdjacentHTML('afterbegin', '<span class="mask"></span><span class="box"></span><span class="tag">' + el.dataset.l + '</span>'); requestAnimationFrame(() => { el.classList.add('on'); setTimeout(() => el.classList.add('seg'), 300); }); }
   const onEnter = (el, fn, start = 'top 85%') => {
     if (G) ScrollTrigger.create({ trigger: el, start, once: true, onEnter: () => fn(el) });
     else new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { o.disconnect(); fn(el); } }, { threshold: .15 }).observe(el);
@@ -87,6 +85,9 @@
 
   /* ───────── hero ───────── */
   const nameEl = $('#name');
+  const HERO_LIST = ['flow', 'terrain', 'net', 'swarm', 'lidar'], qp = new URLSearchParams(location.search).get('hero');
+  const HERO = HERO_LIST.includes(qp) ? qp : (html.dataset.hero || 'flow'), FX = window.HERO;
+  if (new URLSearchParams(location.search).get('console') === 'off') html.classList.add('noconsole');
   async function typeRoles(el) {
     if (reduce) { el.textContent = D.roles[0]; return; }
     for (let i = 0; ; i++) { const r = D.roles[i % D.roles.length]; for (const c of r) { el.textContent += c; await sleep(48 + Math.random() * 30); } await sleep(2000); while (el.textContent.length) { el.textContent = el.textContent.slice(0, -1); await sleep(20); } await sleep(260); }
@@ -99,18 +100,18 @@
     if (!reduce) nameEl.classList.add('fx');
     await boot();
     try { await Promise.race([document.fonts.ready, sleep(1500)]); } catch (e) { }
-    V.lidar($('#lidar'));
+    const bg = $('#herobg');
+    if (HERO === 'lidar') V.lidar(bg); else if (HERO !== 'swarm') FX[HERO](bg);
     V.cvDemo($('#cv'), $('#cvi'), () => cvMode);
     if (G && !reduce) G.to('.h-in', { opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: .09, delay: .5 });
-    try { await V.nameParticles(nameEl); } catch (e) { }
+    try { if (HERO === 'swarm' && !reduce) await FX.swarm(nameEl); else await V.nameParticles(nameEl); } catch (e) { }
     nameEl.classList.remove('fx');
-    $$('.det', nameEl).forEach((d, i) => setTimeout(() => detect(d), i * 260));
     typeRoles($('#role'));
     counters($('#kpis')); drawSparks($('#kpis'));
     // parallax: hero content drifts up as you scroll away
     if (G && !reduce) {
       G.to('.hero', { yPercent: -8, opacity: .25, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
-      G.to('#lidar', { yPercent: 18, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+      G.to('#herobg', { yPercent: 18, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
     }
   }
   heroIntro();
@@ -153,64 +154,25 @@
   }
   onEnter($('#tbl'), drawSparks, 'top 75%');
 
-  // table ↔ graph toggle
-  let gr = null;
-  (() => {
-    const btns = $$('.view button'), pill = $('#vpill');
-    const move = b => { pill.style.width = b.offsetWidth + 'px'; pill.style.transform = `translateX(${b.offsetLeft - 3}px)`; };
-    requestAnimationFrame(() => move(btns[0])); addEventListener('resize', () => move($('.view button.on')));
-    btns.forEach(b => b.addEventListener('click', () => {
-      btns.forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b); }); move(b);
-      const g = b.dataset.v === 'graph';
-      $('#graph').classList.toggle('on', g); $('#tbl').classList.toggle('off', g);
-      if (g && !gr) gr = V.graph($('#gc'), D, $('#gi')); else if (g) gr.reset();
-      if (G) { ScrollTrigger.refresh(); G.fromTo(g ? '#graph' : '#tbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }); }
-    }));
-  })();
 
   // projects: thumbnails, tilt, spotlight, horizontal pin on desktop
   $$('.pc canvas[data-viz]').forEach(c => V.thumb(c, c.dataset.viz));
   $$('.pc').forEach(c => {
     c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px'); });
-    if (G && fine && !reduce) {
-      const rx = G.quickTo(c, 'rotationX', { duration: .5, ease: 'power3' }), ry = G.quickTo(c, 'rotationY', { duration: .5, ease: 'power3' });
-      G.set(c, { transformPerspective: 1000 });
-      c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); rx(-((e.clientY - r.top) / r.height - .5) * 6); ry(((e.clientX - r.left) / r.width - .5) * 8); });
-      c.addEventListener('pointerleave', () => { rx(0); ry(0); });
-    }
   });
-  if (G && !reduce) {
-    const mm = G.matchMedia();
-    mm.add('(min-width: 1024px)', () => {
-      const wrap = $('#pwrap'), track = $('#pt'); wrap.classList.add('pin');
-      const dist = () => Math.max(0, track.scrollWidth - wrap.clientWidth);
-      const tw = G.to(track, {
-        x: () => -dist(), ease: 'none',
-        scrollTrigger: {
-          trigger: '#projects', start: 'top 70px', end: () => '+=' + dist(), pin: true, scrub: .8, invalidateOnRefresh: true, anticipatePin: 1,
-          onUpdate: s => { $('#pbar').style.transform = `scaleX(${s.progress})`; $('#pcount').textContent = String(Math.min(6, 1 + Math.floor(s.progress * 6))).padStart(2, '0') + ' / 06'; }
-        }
-      });
-      G.from('.pc', { opacity: 0, y: 60, duration: 1, ease: 'power3.out', stagger: .08, scrollTrigger: { trigger: '#projects', start: 'top 75%' } });
-      return () => { wrap.classList.remove('pin'); G.set(track, { clearProps: 'x' }); tw.kill(); };
-    });
-    mm.add('(max-width: 1023px)', () => {
-      $$('.pc').forEach(c => G.from(c, { opacity: 0, y: 40, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: c, start: 'top 90%' } }));
-    });
-  }
+  if (G && !reduce) ScrollTrigger.batch('.pc', { start: 'top 88%', once: true, onEnter: b => G.fromTo(b, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: .12, overwrite: true }) });
 
   // education: rail draws with scroll; dots + bars light up
   if (G && !reduce) G.to('#rail', { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '#tl', start: 'top 70%', end: 'bottom 55%', scrub: .6 } });
   else $('#rail').style.transform = 'scaleY(1)';
-  $$('.ti').forEach(t => onEnter(t, e => { e.classList.add('in'); $$('[data-w]', e).forEach(b => setTimeout(() => b.style.width = b.dataset.w + '%', 150)); if (G && !reduce) G.from(e.children, { opacity: 0, x: 24, duration: .8, ease: 'power3.out', stagger: .07 }); }, 'top 78%'));
+  $$('.ti').forEach(t => onEnter(t, e => { e.classList.add('in'); if (G && !reduce) G.from(e.children, { opacity: 0, x: 24, duration: .8, ease: 'power3.out', stagger: .07 }); }, 'top 78%'));
 
-  // contact: chars per letter, detection box when it lands
+  // contact: heading rises in letter by letter
   (() => {
     const t = $('#lbt'), txt = t.textContent; t.setAttribute('aria-label', txt);
     t.innerHTML = [...txt].map(c => c === ' ' ? ' ' : `<span class="ch2" aria-hidden="true">${c}</span>`).join('');
     const lb = $('#lb');
-    if (G && !reduce) G.from($$('.ch2', t), { yPercent: 100, opacity: 0, rotate: 10, duration: 1, ease: 'power4.out', stagger: .04, scrollTrigger: { trigger: lb, start: 'top 85%' }, onComplete: () => detect(lb) });
-    else onEnter(lb, detect);
+    if (G && !reduce) G.from($$('.ch2', t), { yPercent: 100, opacity: 0, rotate: 10, duration: 1, ease: 'power4.out', stagger: .04, scrollTrigger: { trigger: lb, start: 'top 85%' } });
   })();
 
   // marquee + ticker move with scroll velocity
@@ -242,21 +204,11 @@
     $$('section[id]').forEach(s => io.observe(s));
   })();
 
-  /* ───────── custom cursor, glow, magnetic buttons ───────── */
+  /* ───────── cursor glow, magnetic buttons ───────── */
   if (fine && !reduce) {
-    html.classList.add('has-cur');
-    const cur = $('#cur'), ring = $('#ring'), lab = $('b', ring), glow = $('#glow');
-    let x = innerWidth / 2, y = innerHeight / 2, rx = x, ry = y, gx = x, gy = y;
+    const glow = $('#glow'); let x = -999, y = -999, gx = x, gy = y;
     addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; }, { passive: true });
-    const f = () => { rx += (x - rx) * .2; ry += (y - ry) * .2; gx += (x - gx) * .06; gy += (y - gy) * .06;
-      cur.style.transform = `translate(${x}px,${y}px)`; ring.style.transform = `translate(${rx}px,${ry}px)`; glow.style.setProperty('--gx', gx + 'px'); glow.style.setProperty('--gy', gy + 'px'); requestAnimationFrame(f); };
-    f();
-    document.addEventListener('pointerover', e => {
-      const t = e.target.closest('a,button,[data-cur],.chips span,.det,canvas#gc,canvas#cv');
-      ring.classList.toggle('hov', !!t);
-      if (t) lab.textContent = t.dataset.cur || (t.matches('canvas#gc') ? 'drag' : t.matches('canvas#cv') ? 'cam_01' : t.matches('.chips span') ? t.textContent.toLowerCase() : t.matches('.det') ? 'detected' : t.target === '_blank' ? 'open ↗' : 'click');
-    });
-    document.addEventListener('pointerleave', () => html.classList.remove('has-cur')); document.addEventListener('pointerenter', () => html.classList.add('has-cur'));
+    (function f() { gx += (x - gx) * .06; gy += (y - gy) * .06; glow.style.setProperty('--gx', gx + 'px'); glow.style.setProperty('--gy', gy + 'px'); requestAnimationFrame(f); })();
     $$('.mag').forEach(b => {
       const tx = G ? G.quickTo(b, 'x', { duration: .5, ease: 'power3' }) : null, ty = G ? G.quickTo(b, 'y', { duration: .5, ease: 'power3' }) : null;
       b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(), dx = e.clientX - r.left, dy = e.clientY - r.top; b.style.setProperty('--bx', dx + 'px'); b.style.setProperty('--by', dy + 'px'); if (tx) { tx((dx - r.width / 2) * .28); ty((dy - r.height / 2) * .35); } });
@@ -266,7 +218,7 @@
 
   /* ───────── ⌘K command palette ───────── */
   const openPal = (() => {
-    const items = [...$$('section[id]').map(s => [s.dataset.name, '#' + s.id, 'section']), ['copy email', D.links.email, 'action'], ['github', D.links.github, 'link'], ['linkedin', D.links.linkedin, 'link'], ['skill graph', 'graph', 'view']];
+    const items = [...$$('section[id]').map(s => [s.dataset.name, '#' + s.id, 'section']), ['copy email', D.links.email, 'action'], ['github', D.links.github, 'link'], ['linkedin', D.links.linkedin, 'link']];
     const bg = document.createElement('div'); bg.className = 'rvk-pal';
     bg.innerHTML = '<div class="rvk-pal-box" role="dialog" aria-label="Command menu"><input placeholder="Jump to…  (↑ ↓ ⏎)" autocomplete="off"><ul></ul><div class="rvk-pal-ft"><span>esc to close</span><span>⌘K / ctrl K</span></div></div>';
     document.body.appendChild(bg);
@@ -274,7 +226,7 @@
     const render = () => ul.innerHTML = shown.map((it, i) => `<li class="${i === sel ? 'sel' : ''}" data-i="${i}"><span>${it[0]}</span><em>${it[2]}</em></li>`).join('');
     const open = () => { bg.classList.add('open'); inp.value = ''; shown = items; sel = 0; render(); lenis && lenis.stop(); setTimeout(() => inp.focus(), 20); };
     const close = () => { bg.classList.remove('open'); lenis && lenis.start(); };
-    const go = it => { close(); if (it[2] === 'section') scrollTo(it[1]); else if (it[2] === 'action') copy(it[1]); else if (it[2] === 'view') { $('.view button[data-v="graph"]').click(); scrollTo('#skills'); } else window.open(it[1], '_blank', 'noopener'); };
+    const go = it => { close(); if (it[2] === 'section') scrollTo(it[1]); else if (it[2] === 'action') copy(it[1]); else window.open(it[1], '_blank', 'noopener'); };
     bg.onclick = e => { if (e.target === bg) close(); }; ul.onclick = e => { const li = e.target.closest('li'); if (li) go(shown[+li.dataset.i]); };
     inp.oninput = () => { const q = inp.value.toLowerCase(); shown = items.filter(i => i[0].toLowerCase().includes(q)); sel = 0; render(); };
     addEventListener('keydown', e => {
@@ -296,7 +248,7 @@
       help: () => 'commands: whoami · skills · cv · projects · email · github · linkedin · resume · clear · sudo hire-me',
       whoami: () => 'Ritvik Vasantha Kumar — AI Engineer, MS CS @ NYU Tandon',
       skills: () => D.skills.map(s => `${s.k.padEnd(17)} ${s.items.slice(0, 4).join(', ')}…`).join('\n'),
-      cv: () => 'computer_vision: ' + D.skills.find(s => s.isNew).items.join(', '),
+      cv: () => 'computer_vision: ' + D.skills.find(s => s.k === 'computer_vision').items.join(', '),
       projects: () => D.projects.map(p => `${p.hash}  ${p.title}`).join('\n'),
       email: () => { copy(D.links.email); return `<a href="mailto:${D.links.email}">${D.links.email}</a> (copied ✓)`; },
       github: () => { open(D.links.github, '_blank', 'noopener'); return 'opening github.com/ritvikvk-ai …'; },
