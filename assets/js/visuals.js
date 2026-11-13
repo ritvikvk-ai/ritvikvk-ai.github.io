@@ -1,4 +1,4 @@
-/* Canvas visuals: LiDAR hero, particle name, CV demo, skill graph, project thumbnails. */
+/* Canvas visuals: LiDAR hero, particle name, CV demo, project thumbnails. */
 window.VIS = (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const DPR = () => Math.min(devicePixelRatio || 1, 2);
@@ -112,17 +112,6 @@ window.VIS = (() => {
       for (const o of objs) {
         if (!reduce) { o.z += o.v * dt; if (o.z > 30) o.z = -30; if (o.z < -30) o.z = 30; }
         for (const [a, b, c] of o.pts) draw(o.x + a * o.w, b * o.h, o.z + c * o.l);
-        const C = []; for (const X of [-.5, .5]) for (const Y of [0, 1]) for (const Z of [-.5, .5]) C.push(proj(o.x + X * o.w, Y * o.h, o.z + Z * o.l));
-        if (C.some(p => !p)) continue;
-        if (small || Math.hypot(o.x, o.z) >= 28) continue;
-        cx.strokeStyle = o.c + 'b0'; cx.lineWidth = 1;
-        cx.beginPath();
-        for (const [i, j] of [[0, 1], [2, 3], [4, 5], [6, 7], [0, 2], [1, 3], [4, 6], [5, 7], [0, 4], [1, 5], [2, 6], [3, 7]]) { cx.moveTo(C[i][0], C[i][1]); cx.lineTo(C[j][0], C[j][1]); }
-        cx.stroke();
-        const top = C.reduce((m, p) => p[1] < m[1] ? p : m, C[0]);
-        const lab = `${o.lbl} ${(Math.hypot(o.x, o.z)).toFixed(1)}m`;
-        cx.font = `600 10px ${MONO}`; const tw = cx.measureText(lab).width + 8;
-        cx.fillStyle = o.c; cx.fillRect(top[0] - 1, top[1] - 15, tw, 14); cx.fillStyle = '#000'; cx.fillText(lab, top[0] + 3, top[1] - 5);
       }
       // ego vehicle
       const e = [[-1, -2.2], [1, -2.2], [1, 2.2], [-1, 2.2]].map(([x, z]) => proj(x, 0, z));
@@ -137,9 +126,9 @@ window.VIS = (() => {
       const words = [...nameEl.querySelectorAll('.tx')];
       const nb = nameEl.getBoundingClientRect(), PAD = 60;
       const cv = document.createElement('canvas'); cv.id = 'namefx';
-      Object.assign(cv.style, { left: -PAD + 'px', top: -PAD + 'px', width: nb.width + PAD * 2 + 'px', height: nb.height + PAD * 2 + 'px' });
+      Object.assign(cv.style, { left: -PAD + 'px', top: -PAD + 'px', width: Math.ceil(nb.width + PAD * 2) + 'px', height: Math.ceil(nb.height + PAD * 2) + 'px' });
       nameEl.appendChild(cv);
-      const d = DPR(), W = nb.width + PAD * 2, H = nb.height + PAD * 2;
+      const d = DPR(), W = Math.ceil(nb.width + PAD * 2), H = Math.ceil(nb.height + PAD * 2);
       cv.width = W * d; cv.height = H * d; const cx = cv.getContext('2d'); cx.setTransform(d, 0, 0, d, 0, 0);
       // rasterise the words off-screen at their exact positions, then sample filled pixels
       const off = document.createElement('canvas'); off.width = W; off.height = H; const oc = off.getContext('2d', { willReadFrequently: true });
@@ -227,80 +216,6 @@ window.VIS = (() => {
     });
   }
 
-  /* ─────────────── skill graph (force-directed) ─────────────── */
-  function graph(cv, data, info) {
-    const nodes = [], links = [], byName = {};
-    data.skills.forEach((g, gi) => {
-      const hub = { id: g.n, hub: true, c: g.c, g: gi, r: 9, x: 0, y: 0, vx: 0, vy: 0, isNew: g.isNew };
-      nodes.push(hub);
-      g.items.forEach(it => { const n = { id: it, c: g.c, g: gi, r: 4, x: 0, y: 0, vx: 0, vy: 0 }; nodes.push(n); byName[it] = n; links.push({ a: hub, b: n, len: 62, k: .04 }); });
-    });
-    data.related.forEach(([a, b]) => byName[a] && byName[b] && links.push({ a: byName[a], b: byName[b], len: 110, k: .006, x: 1 }));
-    const nb = new Map(nodes.map(n => [n, new Set()])); links.forEach(l => { nb.get(l.a).add(l.b); nb.get(l.b).add(l.a); });
-    let placed = false, alpha = 1, hover = null, drag = null, pm = { x: -1e4, y: -1e4 };
-    const heat = () => alpha = Math.max(alpha, .6);
-    const s = fit(cv, st => { nodes.forEach(n => { n.x = Math.min(Math.max(n.x, 10), st.w - 10); n.y = Math.min(Math.max(n.y, 10), st.h - 10); }); heat(); });
-    function place() {
-      const hubs = nodes.filter(n => n.hub);
-      hubs.forEach((h, i) => { const a = i / hubs.length * Math.PI * 2 - Math.PI / 2; h.x = s.w / 2 + Math.cos(a) * s.w * .26; h.y = s.h / 2 + Math.sin(a) * s.h * .28; });
-      nodes.forEach(n => { if (!n.hub) { const h = hubs[n.g]; n.x = h.x + (Math.random() - .5) * 60; n.y = h.y + (Math.random() - .5) * 60; } });
-      placed = true;
-    }
-    function step() {
-      const cxm = s.w / 2, cym = s.h / 2;
-      for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
-        const a = nodes[i], b = nodes[j]; let dx = b.x - a.x, dy = b.y - a.y, d2 = dx * dx + dy * dy || 1;
-        if (d2 > 40000) continue; const f = (a.hub || b.hub ? 1400 : 650) / d2 * alpha, d = Math.sqrt(d2);
-        dx /= d; dy /= d; a.vx -= dx * f; a.vy -= dy * f; b.vx += dx * f; b.vy += dy * f;
-      }
-      for (const l of links) { const dx = l.b.x - l.a.x, dy = l.b.y - l.a.y, d = Math.hypot(dx, dy) || 1, f = (d - l.len) * l.k * alpha; l.a.vx += dx / d * f; l.a.vy += dy / d * f; l.b.vx -= dx / d * f; l.b.vy -= dy / d * f; }
-      for (const n of nodes) {
-        n.vx += (cxm - n.x) * .0012 * alpha; n.vy += (cym - n.y) * .0016 * alpha;
-        const dx = n.x - pm.x, dy = n.y - pm.y, d = Math.hypot(dx, dy); if (d < 70 && n !== drag) { n.vx += dx / d * .6; n.vy += dy / d * .6; }
-        if (n === drag) { n.x = pm.x; n.y = pm.y; n.vx = n.vy = 0; continue; }
-        n.vx *= .82; n.vy *= .82; n.x += n.vx; n.y += n.vy;
-        n.x = Math.min(Math.max(n.x, 16), s.w - 16); n.y = Math.min(Math.max(n.y, 16), s.h - 16);
-      }
-      alpha = Math.max(.04, alpha * .995);
-    }
-    const lp = loop(cv, t => {
-      const { cx, w, h } = s; if (!w) return; if (!placed) place();
-      step(); cx.clearRect(0, 0, w, h);
-      const hl = hover && nb.get(hover);
-      for (const l of links) {
-        const on = hover && (l.a === hover || l.b === hover);
-        cx.strokeStyle = on ? l.a.c : l.x ? '#ffffff0e' : '#ffffff16'; cx.lineWidth = on ? 1.4 : 1;
-        if (l.x) cx.setLineDash([3, 4]); cx.beginPath(); cx.moveTo(l.a.x, l.a.y); cx.lineTo(l.b.x, l.b.y); cx.stroke(); cx.setLineDash([]);
-        if (on && !reduce) { const k = (t * .8) % 1, px = l.a.x + (l.b.x - l.a.x) * k, py = l.a.y + (l.b.y - l.a.y) * k; cx.fillStyle = '#fff'; cx.fillRect(px - 1.5, py - 1.5, 3, 3); }
-      }
-      for (const n of nodes) {
-        const dim = hover && n !== hover && !hl.has(n);
-        cx.globalAlpha = dim ? .18 : 1;
-        if (n.hub && n.isNew) { const p = (t % 2) / 2; cx.strokeStyle = n.c; cx.globalAlpha = (dim ? .1 : .6) * (1 - p); cx.beginPath(); cx.arc(n.x, n.y, n.r + p * 22, 0, 7); cx.stroke(); cx.globalAlpha = dim ? .18 : 1; }
-        cx.fillStyle = n.hub ? n.c : '#0f1114'; cx.strokeStyle = n.c; cx.lineWidth = 1.5;
-        cx.beginPath(); cx.arc(n.x, n.y, n === hover ? n.r + 2 : n.r, 0, 7); cx.fill(); cx.stroke();
-        cx.font = n.hub ? `600 12.5px ${MONO}` : `11px ${MONO}`;
-        cx.fillStyle = n.hub ? n.c : (n === hover || (hl && hl.has(n)) ? '#fafbfc' : '#8e96a1');
-        cx.fillText(n.id, n.x + n.r + 5, n.y + 4);
-      }
-      cx.globalAlpha = 1;
-    });
-    const pos = e => { const b = cv.getBoundingClientRect(); return { x: e.clientX - b.left, y: e.clientY - b.top }; };
-    const pick = p => { let best = null, bd = 18; for (const n of nodes) { const d = Math.hypot(n.x - p.x, n.y - p.y); if (d < bd) { bd = d; best = n; } } return best; };
-    cv.addEventListener('pointermove', e => {
-      pm = pos(e); if (drag) { heat(); return; }
-      const n = pick(pm); if (n !== hover) {
-        hover = n;
-        if (n) { const g = data.skills[n.g]; info.innerHTML = `<b>${n.id}</b>${n.hub ? `${g.items.length} tools · ${g.sub}` : `${g.n}`}<br>${n.hub ? '' : 'linked: ' + [...nb.get(n)].filter(x => !x.hub).map(x => x.id).slice(0, 4).join(', ')}`; }
-        else info.innerHTML = '<b>skill graph</b>hover a node · drag to rearrange';
-      }
-    });
-    cv.addEventListener('pointerdown', e => { const n = pick(pos(e)); if (n) { drag = n; cv.setPointerCapture(e.pointerId); heat(); } });
-    cv.addEventListener('pointerup', () => { drag = null; });
-    cv.addEventListener('pointerleave', () => { pm = { x: -1e4, y: -1e4 }; hover = null; });
-    return { reset: () => { place(); alpha = 1; }, heat };
-  }
-
   /* ─────────────── project thumbnails ─────────────── */
   const thumbs = {
     agents(cx, w, h, t) {
@@ -372,5 +287,5 @@ window.VIS = (() => {
   };
   function thumb(cv, kind) { const s = fit(cv); return loop(cv, t => { const { cx, w, h } = s; if (!w) return; cx.clearRect(0, 0, w, h); cx.lineWidth = 1; thumbs[kind](cx, w, h, reduce ? 3 : t); }); }
 
-  return { reduce, fit, loop, walk, spark, pct, lidar, nameParticles, cvDemo, graph, thumb };
+  return { reduce, fit, loop, walk, spark, pct, lidar, nameParticles, cvDemo, thumb };
 })();
