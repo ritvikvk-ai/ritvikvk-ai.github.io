@@ -9,12 +9,11 @@
   const sleep = ms => new Promise(r => setTimeout(r, ms));
 
   /* ───────── render content ───────── */
-  $('#kpis').innerHTML = [['NYU GPA', 3.7, 1, '/4.0', .6], ['HACKATHONS', 4, 0, '+', .5], ['PROJECTS', 8, 0, '+', .7]].map(([l, n, d, s, dr], i) =>
-    `<div class="kpi"><div class="l">${l}</div><div class="v"><span data-n="${n}" data-d="${d}">0</span><small>${s}</small></div>${V.spark(V.walk(28, i * 31 + 5, dr), '#2fd67b', 120, 24)}</div>`).join('');
+  $('#kpis').innerHTML = [['GPA at NYU', 3.7, 1, ' / 4.0'], ['Hackathons', 4, 0, '+'], ['AI projects', 8, 0, '+']].map(([l, n, d, s]) =>
+    `<div class="kpi"><div class="v"><span data-n="${n}" data-d="${d}">0</span><small>${s}</small></div><div class="l">${l}</div></div>`).join('');
 
   $('#sk').innerHTML = D.skills.map((s, i) => {
-    const d = V.walk(30, i * 77 + 11, .45 + i * .08);
-    return `<div class="srow" style="--c:${s.c}"><span class="ln">${i + 1}</span><span class="k">"${s.k}"<small>${s.sub} · ${s.items.length} items</small></span><div class="chips">${s.items.map(x => `<span>${x}</span>`).join('')}</div><div class="tz">${V.spark(d, '#2fd67b')}<span class="up">▲ ${V.pct(d)}%</span></div></div>`;
+    return `<div class="srow" style="--c:${s.c}"><span class="ln">${i + 1}</span><span class="k">${s.n}<small>${s.sub} · ${s.items.length} tools</small></span><div class="chips">${s.items.map(x => `<span>${x}</span>`).join('')}</div></div>`;
   }).join('');
   $('#m2').textContent = D.skills.reduce((a, s) => a + s.items.length, 0) + ' tools indexed';
 
@@ -107,7 +106,7 @@
     try { if (HERO === 'swarm' && !reduce) await FX.swarm(nameEl); else await V.nameParticles(nameEl); } catch (e) { }
     nameEl.classList.remove('fx');
     typeRoles($('#role'));
-    counters($('#kpis')); drawSparks($('#kpis'));
+    counters($('#kpis'));
     // parallax: hero content drifts up as you scroll away
     if (G && !reduce) {
       G.to('.hero', { yPercent: -8, opacity: .25, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
@@ -152,7 +151,6 @@
     G.from('.srow', { opacity: 0, x: -30, duration: .8, ease: 'power3.out', stagger: .08, scrollTrigger: { trigger: '#tbl', start: 'top 80%' } });
     $$('.srow').forEach(r => G.from($$('.chips span', r), { opacity: 0, scale: .7, y: 8, duration: .45, ease: 'back.out(2)', stagger: .025, scrollTrigger: { trigger: r, start: 'top 88%' } }));
   }
-  onEnter($('#tbl'), drawSparks, 'top 75%');
 
 
   // projects: thumbnails, tilt, spotlight, horizontal pin on desktop

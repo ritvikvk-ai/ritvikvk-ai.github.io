@@ -164,8 +164,8 @@ async def ask(q: Query) -> Answer:
 
   /* ───────── 4. system: live architecture map with traffic and metrics ───────── */
   function system(root, ui) {
-    ui.title('prod — system map');
-    root.appendChild(h(`<div class="ps"><canvas></canvas><div class="ps-m"></div><div class="ps-log"></div></div>`));
+    ui.title('system design — AI app');
+    root.appendChild(h(`<div class="ps"><canvas></canvas><div class="ps-m"></div><div class="ps-cap">example architecture · simulated traffic</div><div class="ps-log"></div></div>`));
     const cv = root.querySelector('canvas'), m = root.querySelector('.ps-m'), lg = root.querySelector('.ps-log'), S = fit(cv);
     const N = {
       client: { x: .12, y: .5, l: 'client', s: 'web · mobile' }, api: { x: .35, y: .5, l: 'api', s: 'FastAPI' },
@@ -196,11 +196,11 @@ async def ask(q: Query) -> Answer:
       }
       cx.font = `600 11px ${MONO}`;
       for (const n of Object.values(N)) {
-        n.load *= .97; const [x, y] = [n.x * w, n.y * H], bw = Math.min(108, w * .2), bh = 34;
+        n.load *= .97; const tiny = w < 440, [x, y] = [n.x * w, n.y * H], bw = tiny ? w * .23 : Math.min(108, w * .2), bh = tiny ? 26 : 34;
         cx.fillStyle = '#0f1114'; cx.strokeStyle = n.load > .5 ? '#c8ff2e' : '#2a2f36'; cx.lineWidth = 1;
         cx.beginPath(); cx.roundRect ? cx.roundRect(x - bw / 2, y - bh / 2, bw, bh, 6) : cx.rect(x - bw / 2, y - bh / 2, bw, bh); cx.fill(); cx.stroke();
-        cx.fillStyle = '#fafbfc'; cx.font = `600 10.5px ${MONO}`; cx.fillText(n.l, x - bw / 2 + 8, y - 3);
-        cx.fillStyle = '#8e96a1'; cx.font = `9.5px ${MONO}`; cx.fillText(n.s, x - bw / 2 + 8, y + 10);
+        cx.fillStyle = '#fafbfc'; cx.font = `600 ${tiny ? 9.5 : 10.5}px ${MONO}`; cx.fillText(n.l, x - bw / 2 + (tiny ? 5 : 8), tiny ? y + 2 : y - 3);
+        if (!tiny) { cx.fillStyle = '#8e96a1'; cx.font = `9.5px ${MONO}`; cx.fillText(n.s, x - bw / 2 + 8, y + 10); }
         cx.fillStyle = '#2a2f36'; cx.fillRect(x - bw / 2 + 8, y + bh / 2 - 5, bw - 16, 2); cx.fillStyle = n.load > .7 ? '#ffb000' : '#2fd67b'; cx.fillRect(x - bw / 2 + 8, y + bh / 2 - 5, (bw - 16) * n.load, 2);
       }
       rps += (230 + Math.sin(t * .7) * 40 - rps) * .05; p50 += (40 + Math.sin(t * 1.3) * 4 - p50) * .05; p99 += (170 + Math.sin(t * .9) * 22 - p99) * .05;
