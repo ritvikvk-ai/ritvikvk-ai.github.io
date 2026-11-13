@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RVK Terminal | Ritvik Vasantha Kumar</title>
+<meta name="description" content="Ritvik Vasantha Kumar — AI Engineer, MS Computer Science at NYU Tandon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter+Tight:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050505;--p:#0c0c0c;--p2:#121212;--ln:#222;--ln2:#333;
+  --amber:#ffb000;--amber-d:#ffb00022;--up:#00d26a;--dn:#ff4d4d;--cyan:#33ccff;
+  --text:#e6e6e6;--mu:#9a9a9a;--di:#5c5c5c;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;--disp:'Inter Tight',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font:15px/1.65 var(--mono);-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--ln) 1px,transparent 1px),linear-gradient(90deg,var(--ln) 1px,transparent 1px);background-size:48px 48px;background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0,transparent 0,var(--bg) 75%);pointer-events:none;z-index:0}
+a{color:inherit}
+
+.top{position:sticky;top:0;z-index:50;background:#000;border-bottom:1px solid var(--ln2)}
+.bar{display:flex;align-items:center;gap:0;height:36px;font-size:12px;border-bottom:1px solid var(--ln)}
+.brand{background:var(--amber);color:#000;font-weight:700;padding:0 14px;height:100%;display:flex;align-items:center;letter-spacing:1px}
+.fkeys{display:flex;height:100%;overflow-x:auto}
+.fkeys a{display:flex;align-items:center;gap:6px;padding:0 14px;text-decoration:none;color:var(--mu);border-right:1px solid var(--ln);white-space:nowrap}
+.fkeys a b{color:var(--amber);font-weight:600}
+.fkeys a:hover,.fkeys a.on{background:var(--amber-d);color:#fff}
+.clock{margin-left:auto;padding:0 14px;color:var(--amber);white-space:nowrap}
+.tape{overflow:hidden;height:30px;display:flex;align-items:center;font-size:12.5px;background:#070707}
+.tape-in{display:flex;gap:34px;white-space:nowrap;animation:tape 60s linear infinite;padding-left:20px}
+.tape:hover .tape-in{animation-play-state:paused}
+.tk b{color:#fff;font-weight:600;margin-right:8px}.up{color:var(--up)}.dn{color:var(--dn)}
+@keyframes tape{to{transform:translateX(-50%)}}
+
+.wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 20px}
+.panel{background:var(--p);border:1px solid var(--ln2);margin-bottom:16px}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:var(--p2);border-bottom:1px solid var(--ln2);font-size:12px;letter-spacing:1px;color:var(--mu)}
+.ph b{color:var(--amber);font-weight:600}
+.ph .go{background:var(--amber);color:#000;padding:0 6px;font-weight:700;margin-left:8px}
+.pb{padding:22px}
+section{padding-top:56px;scroll-margin-top:70px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;padding-top:28px}
+.quote .sym{font-size:13px;color:var(--mu);letter-spacing:2px}
+.quote h1{font:800 clamp(46px,6.6vw,88px)/.95 var(--disp);letter-spacing:-.04em;color:#fff;margin:12px 0 16px}
+.quote h1 span{color:var(--amber)}
+.px{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.px .big{font:600 34px var(--mono);color:#fff}
+.px .chg{font-size:16px;color:var(--up)}
+.quote p{color:var(--mu);max-width:560px;font-size:15.5px}
+.quote p strong{color:#fff;font-weight:500}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.btn{font:600 13px var(--mono);padding:10px 16px;border:1px solid var(--ln2);text-decoration:none;color:var(--text);background:#000;transition:.15s;letter-spacing:.5px}
+.btn:hover{border-color:var(--amber);color:var(--amber)}
+.btn.a{background:var(--amber);color:#000;border-color:var(--amber)}
+.btn.a:hover{background:#fff;border-color:#fff}
+#chart{width:100%;height:230px;flex:1;min-height:230px;display:block}
+.hero>.panel:last-child{display:flex;flex-direction:column}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--ln)}
+.kv div{padding:12px 14px;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);font-size:13px}
+.kv div:nth-child(2n){border-right:0}
+.kv span{display:block;color:var(--di);font-size:11px;letter-spacing:1px}
+.kv b{color:#fff;font-weight:600;font-size:20px}
+
+/* about */
+.about{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.about p{color:var(--mu);margin-bottom:14px;font-size:15.5px}
+.about p strong{color:#fff;font-weight:500}
+.news li{list-style:none;padding:10px 0;border-bottom:1px dashed var(--ln2);font-size:13.5px;display:flex;gap:12px}
+.news li:last-child{border:0}
+.news time{color:var(--amber);flex-shrink:0}
+
+/* skills table */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-weight:500;color:var(--di);font-size:11px;letter-spacing:1.5px;padding:10px 14px;border-bottom:1px solid var(--ln2)}
+td{padding:14px;border-bottom:1px solid var(--ln);vertical-align:top}
+tr{transition:background .15s}
+tbody tr:hover{background:#ffb00009}
+td.sec{color:#fff;font-weight:600;white-space:nowrap}
+td.sec small{display:block;color:var(--di);font-weight:400;font-size:11px;letter-spacing:1px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{border:1px solid var(--ln2);padding:2px 8px;font-size:12.5px;color:var(--text);transition:.15s}
+.chips span:hover{border-color:var(--amber);color:var(--amber)}
+tr.new td{background:#00d26a0c}
+tr.new td.sec::after{content:"NEW LISTING";display:inline-block;margin-top:6px;background:var(--up);color:#000;font-size:10px;padding:1px 6px;letter-spacing:1px}
+.spark{width:120px;height:34px}
+td.ch{white-space:nowrap;text-align:right}
+
+/* projects */
+.proj{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pc{background:var(--p);border:1px solid var(--ln2);display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
+.pc:hover{border-color:var(--amber);transform:translateY(-3px)}
+.pc .ph{font-size:11px}
+.pc .pb{display:flex;flex-direction:column;flex:1;padding:18px}
+.pc h3{font:700 20px/1.2 var(--disp);color:#fff;margin-bottom:10px;letter-spacing:-.01em}
+.pc p{color:var(--mu);font-size:14px;flex:1;margin-bottom:14px}
+.pc .met{display:flex;justify-content:space-between;border-top:1px solid var(--ln);padding-top:10px;font-size:12px;color:var(--di)}
+.pc .met b{color:var(--up);font-weight:600}
+.pc a{color:var(--amber);text-decoration:none}
+.pc a:hover{text-decoration:underline}
+.tg{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.tg span{font-size:11.5px;color:var(--cyan)}
+.tg span::before{content:"#"}
+
+/* edu */
+.edu{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.edu h3{font:700 22px var(--disp);color:#fff}
+.edu .sub{color:var(--mu);font-size:14px;margin:4px 0 12px}
+.edu .body{color:var(--di);font-size:14px;margin-bottom:14px}
+.gpa{display:flex;align-items:center;gap:12px;font-size:13px}
+.meter{flex:1;height:6px;background:var(--ln);position:relative;overflow:hidden}
+.meter i{position:absolute;inset:0;width:0;background:var(--amber);transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+
+/* contact */
+.contact{text-align:center;padding:64px 22px}
+.contact h2{font:800 clamp(48px,8vw,108px)/.92 var(--disp);letter-spacing:-.05em;color:#fff;margin:14px 0 20px}
+.contact h2 span{color:var(--amber)}
+.contact .cta{justify-content:center}
+.cmd{display:flex;align-items:center;border-top:1px solid var(--ln2);font-size:13px}
+.cmd label{background:var(--amber);color:#000;padding:10px 12px;font-weight:700}
+.cmd input{flex:1;background:#000;border:0;color:var(--amber);padding:10px 12px;font:inherit;outline:none;text-transform:uppercase;min-width:0}
+.cmd .hint{padding:0 12px;color:var(--di);font-size:11px;white-space:nowrap}
+footer{border-top:1px solid var(--ln2);padding:16px 20px 24px;display:flex;justify-content:space-between;font-size:12px;color:var(--di);position:relative;z-index:1;max-width:1240px;margin:20px auto 0}
+
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
+.rv.in{opacity:1;transform:none}
+.flash{animation:flash .9s}
+@keyframes flash{0%{background:#ffb00033}100%{background:transparent}}
+
+@media(max-width:960px){
+  .hero,.about,.edu{grid-template-columns:1fr}.proj{grid-template-columns:1fr}
+  .clock{display:none}
+  .spark,.ch,th.ch{display:none}
+  td,th{padding:10px}
+  .cmd .hint{display:none}
+}
+@media(min-width:961px) and (max-width:1150px){.proj{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="bar">
+    <div class="brand">RVK&lt;GO&gt;</div>
+    <nav class="fkeys" id="fk">
+      <a href="#hero" data-s="hero"><b>F1</b>QUOTE</a>
+      <a href="#about" data-s="about"><b>F2</b>PROFILE</a>
+      <a href="#skills" data-s="skills"><b>F3</b>HOLDINGS</a>
+      <a href="#projects" data-s="projects"><b>F4</b>DEALS</a>
+      <a href="#education" data-s="education"><b>F5</b>RATING</a>
+      <a href="#contact" data-s="contact"><b>F6</b>CONTACT</a>
+    </nav>
+    <div class="clock" id="clock">NYC --:--:--</div>
+  </div>
+  <div class="tape"><div class="tape-in" id="tape"></div></div>
+</div>
+
+<div class="wrap">
+<section id="hero" style="padding-top:0">
+  <div class="hero">
+    <div class="panel quote rv">
+      <div class="ph"><span><b>RVK US</b> Equity · NYU:MSCS</span><span>LIVE ●</span></div>
+      <div class="pb">
+        <div class="sym">AI ENGINEER · BROOKLYN, NY</div>
+        <h1>Ritvik<br><span>Vasantha</span> Kumar</h1>
+        <div class="px"><span class="big" id="px">3.70</span><span class="chg" id="chg">▲ +0.42 (12.8%)</span><span style="color:var(--di);font-size:12px">GPA · YTD</span></div>
+        <p><strong>MS Computer Science @ NYU Tandon.</strong> Building multi-agent systems, generative AI, computer vision pipelines and cloud-native ML platforms — models that ship.</p>
+        <div class="cta">
+          <a class="btn a" href="#projects">VIEW DEALS →</a>
+          <a class="btn" href="https://github.com/ritvikvk-ai" target="_blank" rel="noopener">GITHUB ↗</a>
+          <a class="btn" href="https://linkedin.com/in/ritvik-vk" target="_blank" rel="noopener">LINKEDIN ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel rv">
+      <div class="ph"><span><b>GP</b> SKILL INDEX · INTRADAY</span><span id="lastv">—</span></div>
+      <canvas id="chart"></canvas>
+      <div class="kv">
+        <div><span>HACKATHONS</span><b data-n="4" data-s="+">0</b></div>
+        <div><span>AI PROJECTS</span><b data-n="8" data-s="+">0</b></div>
+        <div><span>TOOLS</span><b data-n="38" data-s="+">0</b></div>
+        <div><span>AWARDS</span><b data-n="1" data-s="× BEST PROJ">0</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="about">
+    <div class="panel rv"><div class="ph"><span><b>DES</b> DESCRIPTION<span class="go">GO</span></span><span>PROFILE</span></div>
+      <div class="pb">
+        <p>I'm a Master's student in Computer Science at <strong>NYU Tandon School of Engineering</strong>, specializing in AI, machine learning and generative systems. My work lives where applied research meets real product engineering.</p>
+        <p>I've built <strong>agentic coding assistants</strong>, <strong>multimodal story engines</strong>, <strong>RAG pipelines for robotics</strong>, <strong>vision pipelines</strong> and <strong>financial anomaly detection</strong> — always connecting cutting-edge models to deployable software.</p>
+        <p>Open to AI Engineer, ML Engineer, Computer Vision and Applied AI roles.</p>
+      </div>
+    </div>
+    <div class="panel rv"><div class="ph"><span><b>NEWS</b> TOP HEADLINES</span><span>RVK</span></div>
+      <div class="pb"><ul class="news">
+        <li><time>2026</time>Adds Computer Vision desk: OWLv2, SAM, RF-DETR, BEVFormer</li>
+        <li><time>2025</time>Ships agentic code assistant at HOF Capital Hacks</li>
+        <li><time>2025</time>Builds LORE at NYU × Google Gemini Hackathon</li>
+        <li><time>2025</time>Weaviate RAG bot at Microsoft Hack Night</li>
+        <li><time>2024</time>Joins NYU Tandon MS CS program</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="panel rv">
+    <div class="ph"><span><b>PORT</b> HOLDINGS BY SECTOR<span class="go">GO</span></span><span>6 SECTORS</span></div>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>SECTOR</th><th>POSITIONS</th><th class="ch">TREND</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="ph" style="border:1px solid var(--ln2);margin-bottom:16px"><span><b>DEAL</b> SELECTED TRANSACTIONS<span class="go">GO</span></span><span>6 RESULTS</span></div>
+  <div class="proj">
+    <div class="pc rv"><div class="ph"><span><b>HOF CAPITAL HACKS</b></span><span>MULTI-AGENT</span></div><div class="pb"><h3>Agentic AI Code Assistant</h3><p>Multi-agent system automating the full SDLC — research, generation, review, testing and security analysis via LangGraph handoffs, Anthropic LLMs and GitHub MCP.</p><div class="tg"><span>langgraph</span><span>anthropic</span><span>mcp</span><span>docker</span></div><div class="met"><span>STATUS <b>SHIPPED</b></span><a href="https://github.com/ritvikvk-ai/remote-dev-ai" target="_blank" rel="noopener">REPO ↗</a></div></div></div>
+    <div class="pc rv"><div class="ph"><span><b>NYU × GEMINI</b></span><span>MULTIMODAL</span></div><div class="pb"><h3>LORE: Multimodal Story Engine</h3><p>Synchronized text, image and voice generation with Gemini 2.5 Pro and Google ADK; agent-to-agent pipelines and live voice I/O.</p><div class="tg"><span>gemini</span><span>adk</span><span>vertex</span><span>react</span></div><div class="met"><span>STATUS <b>SHIPPED</b></span><a href="https://github.com/ritvikvk-ai/LORE" target="_blank" rel="noopener">REPO ↗</a></div></div></div>
+    <div class="pc rv"><div class="ph"><span><b>AI RESEARCH</b></span><span>RAG</span></div><div class="pb"><h3>Fine-Tuned RAG for Robotics</h3><p>LLaMA 3 fine-tuned on ROS2 Navigation docs with Qdrant retrieval, served through Ollama + Gradio. Higher precision, lower latency.</p><div class="tg"><span>llama3</span><span>qdrant</span><span>ros2</span><span>ollama</span></div><div class="met"><span>STATUS <b>SHIPPED</b></span><a href="https://github.com/ritvikvk-ai/ai_project" target="_blank" rel="noopener">REPO ↗</a></div></div></div>
+    <div class="pc rv"><div class="ph"><span><b>MSFT HACK NIGHT</b></span><span>ENTERPRISE</span></div><div class="pb"><h3>Weaviate RAG Chatbot</h3><p>Enterprise knowledge assistant: ingestion, embedding retrieval and context-grounded generation designed to minimise hallucination.</p><div class="tg"><span>weaviate</span><span>rag</span><span>fastapi</span></div><div class="met"><span>STATUS <b>SHIPPED</b></span><span></span></div></div></div>
+    <div class="pc rv"><div class="ph"><span><b>FINANCIAL ML</b></span><span>SURVEILLANCE</span></div><div class="pb"><h3>Insider Trading Detection</h3><p>LSTM sequence model flagging anomalous trading patterns across large-scale market records for compliance surveillance.</p><div class="tg"><span>lstm</span><span>tensorflow</span><span>timeseries</span></div><div class="met"><span>ACCURACY <b>~85%</b></span><span></span></div></div></div>
+    <div class="pc rv"><div class="ph"><span><b>BEST PROJECT ★</b></span><span>VISION</span></div><div class="pb"><h3>Image-to-Text Conversion</h3><p>Captioning pipeline: Inception-v3 visual features into an LSTM decoder. Awarded Best Project of the Year.</p><div class="tg"><span>inceptionv3</span><span>lstm</span><span>cv</span></div><div class="met"><span>ACCURACY <b>~95%</b></span><span></span></div></div></div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="edu">
+    <div class="panel rv"><div class="ph"><span><b>RATING</b> NEW YORK UNIVERSITY</span><span>2024 – 2026E</span></div><div class="pb">
+      <h3>New York University</h3><div class="sub">Tandon School of Engineering · MS Computer Science</div>
+      <div class="body">Machine learning · AI · deep learning · algorithms · database systems · robotics AI · cloud-based AI systems.</div>
+      <div class="gpa"><span>GPA</span><div class="meter"><i data-w="92.5"></i></div><b style="color:var(--amber)">3.7/4.0</b></div>
+    </div></div>
+    <div class="panel rv"><div class="ph"><span><b>RATING</b> NMAM INSTITUTE OF TECH</span><span>GRADUATED</span></div><div class="pb">
+      <h3>NMAM Institute of Technology</h3><div class="sub">VTU · BE Computer Science · Karnataka, India</div>
+      <div class="body">ML · NLP · cybersecurity · big data analytics · computer architecture · data structures.</div>
+      <div class="gpa"><span>CGPA</span><div class="meter"><i data-w="88.9"></i></div><b style="color:var(--amber)">8.89/10</b></div>
+    </div></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="panel rv">
+    <div class="ph"><span><b>MSG</b> OPEN ORDER</span><span style="color:var(--up)">● ACCEPTING</span></div>
+    <div class="contact">
+      <div style="color:var(--mu);letter-spacing:2px;font-size:12px">AI ENGINEER · ML ENGINEER · COMPUTER VISION · APPLIED AI</div>
+      <h2>Let's <span>build.</span></h2>
+      <div class="cta">
+        <a class="btn a" href="mailto:rv2459@nyu.edu">✉ RV2459@NYU.EDU</a>
+        <a class="btn" href="https://linkedin.com/in/ritvik-vk" target="_blank" rel="noopener">LINKEDIN ↗</a>
+        <a class="btn" href="https://github.com/ritvikvk-ai" target="_blank" rel="noopener">GITHUB ↗</a>
+      </div>
+    </div>
+    <form class="cmd" id="cmd"><label>&gt;</label><input id="cmdIn" placeholder="TYPE A FUNCTION: DEAL, PORT, DES, MSG …" autocomplete="off"><span class="hint">PRESS ENTER ⏎</span></form>
+  </div>
+</section>
+</div>
+<footer><span>RITVIK VASANTHA KUMAR · BROOKLYN, NY</span><span>© 2026 · NOT FINANCIAL ADVICE</span></footer>
+
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const skills=[
+ ["AI / ML","LLMs · DL",["PyTorch","TensorFlow","Keras","Scikit-Learn","LangGraph","RAG","LLaMA 3","Multi-Agent Systems","HuggingFace Transformers","Gemini API","Anthropic LLMs","Google ADK"]],
+ ["Computer Vision","PERCEPTION",["OWLv2","SAM","RF-DETR","BEVFormer","OpenCV","FFmpeg","Instance Segmentation","Object Tracking"],1],
+ ["Cloud & MLOps","INFRA",["Azure","Azure OpenAI","GCP","Vertex AI","AWS","Docker","CI/CD","Databricks","ZenML","ClearML"]],
+ ["Languages","CORE",["Python","SQL","JavaScript","C++","Java","C","HTML","CSS"]],
+ ["Data Engineering","PIPELINES",["Spark","Hadoop","PostgreSQL","MongoDB","Qdrant","Weaviate","Pandas","NumPy","Databricks SQL"]],
+ ["Frontend & Tools","PRODUCT",["React","FastAPI","Gradio","Power BI","Tableau","Bootstrap","GitHub","VSCode"]],
+];
+function walk(n,seed,drift){let v=50,a=[],s=seed;for(let i=0;i<n;i++){s=(s*9301+49297)%233280;v+=(s/233280-.5)*6+drift;a.push(v)}return a}
+function sparkSVG(d,col){const mn=Math.min(...d),mx=Math.max(...d),w=120,h=34;const pts=d.map((v,i)=>`${(i/(d.length-1)*w).toFixed(1)},${(h-3-(v-mn)/(mx-mn||1)*(h-6)).toFixed(1)}`).join(' ');return `<svg class="spark" viewBox="0 0 ${w} ${h}"><polyline fill="none" stroke="${col}" stroke-width="1.5" points="${pts}"/></svg>`}
+tbody.innerHTML=skills.map(([n,sub,list,isNew],i)=>{const d=walk(30,i*77+11,isNew?1.1:.45);const pct=((d[29]-d[0])/d[0]*100).toFixed(1);
+  return `<tr class="${isNew?'new':''}"><td class="sec">${n}<small>${sub} · ${list.length} POS</small></td><td><div class="chips">${list.map(s=>`<span>${s}</span>`).join('')}</div></td><td class="ch">${sparkSVG(d,'#00d26a')}<div class="up">▲ ${pct}%</div></td></tr>`}).join('');
+
+/* ticker tape */
+const tks=[["PYTORCH",1],["LANGGRAPH",1],["OWLV2",1],["SAM",1],["RF-DETR",1],["BEVFORMER",1],["OPENCV",1],["RAG",1],["GEMINI",1],["VERTEX",1],["AZURE",0],["DOCKER",1],["SPARK",0],["QDRANT",1],["WEAVIATE",1],["FASTAPI",1],["LLAMA3",1],["TENSORFLOW",0],["FFMPEG",1],["CUDA",1]];
+const tapeHTML=tks.map(([t,u])=>{const p=(Math.random()*4+.2).toFixed(2),v=(Math.random()*900+100).toFixed(2);return `<span class="tk"><b>${t}</b>${v} <span class="${u?'up':'dn'}">${u?'▲':'▼'} ${p}%</span></span>`}).join('');
+tape.innerHTML=tapeHTML+tapeHTML;
+
+/* clock */
+function tick(){clock.textContent='NYC '+new Date().toLocaleTimeString('en-US',{hour12:false,timeZone:'America/New_York'})+' ET'}tick();setInterval(tick,1000);
+
+/* live chart */
+const cv=document.getElementById('chart'),cx=cv.getContext('2d');let W,H,data=walk(120,3,.25);
+function size(){const r=cv.getBoundingClientRect(),d=devicePixelRatio||1;W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0)}
+size();addEventListener('resize',size);
+function draw(){cx.clearRect(0,0,W,H);const mn=Math.min(...data)-2,mx=Math.max(...data)+2,y=v=>H-12-(v-mn)/(mx-mn)*(H-24),x=i=>i/(data.length-1)*W;
+  cx.strokeStyle='#1a1a1a';cx.lineWidth=1;for(let i=1;i<5;i++){cx.beginPath();cx.moveTo(0,H*i/5);cx.lineTo(W,H*i/5);cx.stroke()}
+  const g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#ffb00040');g.addColorStop(1,'#ffb00000');
+  cx.beginPath();data.forEach((v,i)=>i?cx.lineTo(x(i),y(v)):cx.moveTo(x(i),y(v)));cx.lineTo(W,H);cx.lineTo(0,H);cx.fillStyle=g;cx.fill();
+  cx.beginPath();data.forEach((v,i)=>i?cx.lineTo(x(i),y(v)):cx.moveTo(x(i),y(v)));cx.strokeStyle='#ffb000';cx.lineWidth=1.6;cx.stroke();
+  const ly=y(data[data.length-1]);cx.setLineDash([3,3]);cx.strokeStyle='#ffb00080';cx.beginPath();cx.moveTo(0,ly);cx.lineTo(W,ly);cx.stroke();cx.setLineDash([]);
+  cx.fillStyle='#ffb000';cx.beginPath();cx.arc(W-3,ly,3.5,0,7);cx.fill();
+  lastv.textContent='LAST '+data[data.length-1].toFixed(2);}
+draw();
+if(!reduce)setInterval(()=>{const l=data[data.length-1];data.push(l+(Math.random()-.44)*3);data.shift();draw()},700);
+
+/* reveal + counters + meters */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('in');io.unobserve(e.target);
+  e.target.querySelectorAll('[data-n]').forEach(el=>{const n=+el.dataset.n,s=el.dataset.s||'',t0=performance.now();(function f(t){const p=Math.min((t-t0)/1100,1);el.textContent=Math.round(n*(1-Math.pow(1-p,3)))+s;if(p<1)requestAnimationFrame(f)})(t0)});
+  e.target.querySelectorAll('.meter i').forEach(m=>setTimeout(()=>m.style.width=m.dataset.w+'%',200));
+}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+
+/* active fkey */
+const fk=document.querySelectorAll('.fkeys a');
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)fk.forEach(a=>a.classList.toggle('on',a.dataset.s===e.target.id))}),{rootMargin:'-40% 0px -55% 0px'});
+document.querySelectorAll('section').forEach(s=>so.observe(s));
+
+/* function keys + command line */
+const map={F1:'hero',F2:'about',F3:'skills',F4:'projects',F5:'education',F6:'contact',QUOTE:'hero',DES:'about',PROFILE:'about',PORT:'skills',HOLDINGS:'skills',SKILLS:'skills',DEAL:'projects',DEALS:'projects',PROJECTS:'projects',RATING:'education',EDU:'education',MSG:'contact',CONTACT:'contact'};
+function jump(id){const s=document.getElementById(id);s.scrollIntoView({behavior:'smooth'});const p=s.querySelector('.panel,.ph');if(p){p.classList.remove('flash');void p.offsetWidth;p.classList.add('flash')}}
+addEventListener('keydown',e=>{if(map[e.key]&&document.activeElement!==cmdIn){e.preventDefault();jump(map[e.key])}});
+cmd.onsubmit=e=>{e.preventDefault();const v=cmdIn.value.trim().toUpperCase().replace(/<?GO>?$/,'').trim();
+  if(v==='GH'||v==='GITHUB')open('https://github.com/ritvikvk-ai');else if(map[v])jump(map[v]);else cmdIn.value='UNKNOWN FUNCTION — TRY DEAL / PORT / DES';setTimeout(()=>{if(map[v])cmdIn.value=''},50)};
+</script>
+</body>
+</html>
