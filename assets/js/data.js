@@ -5,7 +5,7 @@ window.RVK_DATA = {
     github: 'https://github.com/ritvikvk-ai',
     linkedin: 'https://linkedin.com/in/ritvik-vk'
   },
-  roles: ['AI Engineer', 'Computer Vision Engineer', 'ML Engineer', 'Multi-Agent Systems Builder', 'Applied AI'],
+  roles: ['AI Engineer', 'Software Engineer', 'Computer Vision Engineer', 'ML Engineer', 'Multi-Agent Systems Builder'],
   skills: [
     { k: 'ai_ml', n: 'AI / ML', sub: 'LLMs · deep learning', c: '#5ad8ff',
       items: ['PyTorch', 'TensorFlow', 'Keras', 'Scikit-Learn', 'LangGraph', 'RAG', 'LLaMA 3', 'Multi-Agent Systems', 'HuggingFace Transformers', 'Gemini API', 'Anthropic LLMs', 'Google ADK'] },

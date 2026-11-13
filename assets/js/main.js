@@ -86,14 +86,12 @@
   /* ───────── hero ───────── */
   const nameEl = $('#name');
   const HERO_LIST = ['flow', 'terrain', 'net', 'swarm', 'lidar'], qp = new URLSearchParams(location.search).get('hero');
-  const HERO = HERO_LIST.includes(qp) ? qp : (html.dataset.hero || 'flow'), FX = window.HERO;
+  const HERO = HERO_LIST.includes(qp) ? qp : (html.dataset.hero || 'net'), FX = window.HERO;
   if (new URLSearchParams(location.search).get('console') === 'off') html.classList.add('noconsole');
   async function typeRoles(el) {
     if (reduce) { el.textContent = D.roles[0]; return; }
     for (let i = 0; ; i++) { const r = D.roles[i % D.roles.length]; for (const c of r) { el.textContent += c; await sleep(48 + Math.random() * 30); } await sleep(2000); while (el.textContent.length) { el.textContent = el.textContent.slice(0, -1); await sleep(20); } await sleep(260); }
   }
-  let cvMode = -1;
-  $$('#modes button').forEach(b => b.addEventListener('click', () => { cvMode = +b.dataset.m; $$('#modes button').forEach(x => x.classList.toggle('on', x === b)); }));
 
   async function heroIntro() {
     if (G && !reduce) G.set('.h-in', { opacity: 0, y: 24 });
@@ -102,7 +100,9 @@
     try { await Promise.race([document.fonts.ready, sleep(1500)]); } catch (e) { }
     const bg = $('#herobg');
     if (HERO === 'lidar') V.lidar(bg); else if (HERO !== 'swarm') FX[HERO](bg);
-    V.cvDemo($('#cv'), $('#cvi'), () => cvMode);
+    const PANEL_LIST = ['vision', 'pipeline', 'editor', 'system', 'tabs'], pq = new URLSearchParams(location.search).get('panel');
+    const PANEL = PANEL_LIST.includes(pq) ? pq : (html.dataset.panel || 'tabs');
+    window.PANELS[PANEL]($('#panel'), { title: s => { $('#ptitle').textContent = s; } });
     if (G && !reduce) G.to('.h-in', { opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: .09, delay: .5 });
     try { if (HERO === 'swarm' && !reduce) await FX.swarm(nameEl); else await V.nameParticles(nameEl); } catch (e) { }
     nameEl.classList.remove('fx');
