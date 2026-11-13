@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rvk@nyu | Ritvik Vasantha Kumar</title>
+<meta name="description" content="Ritvik Vasantha Kumar — AI Engineer, MS Computer Science at NYU Tandon. Multi-agent systems, generative AI and computer vision.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090a;--pane:#0b0e0d;--ln:#1d2622;--ln2:#2c3a33;
+  --g:#4af08a;--amber:#ffc04d;--cyan:#59d6ff;--mag:#ff6ac1;--red:#ff6b6b;
+  --text:#d3ddd7;--hi:#f4fbf7;--mu:#8b9a92;--di:#56645d;
+  --mono:'JetBrains Mono',ui-monospace,monospace;--disp:'Space Grotesk',system-ui,sans-serif;
+  --pal-bg:#0d1110;--pal-ln:#2c3a33;--pal-sel:#4af08a18;--pal-r:4px;--xh:#4af08a0c;--xh-t:#4af08a55;--toast-bg:#0d1110;--toast-fg:#4af08a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font:15.5px/1.75 var(--mono);-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:34px}
+a{color:inherit}
+::selection{background:#4af08a40;color:#fff}
+#bgc{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.5}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;background:repeating-linear-gradient(0deg,#ffffff02 0 1px,transparent 1px 3px)}
+
+main{position:relative;z-index:2;max-width:1400px;margin:0 auto;padding:16px clamp(10px,2vw,20px)}
+section{scroll-margin-top:16px;margin-bottom:22px}
+
+/* panes */
+.pane{position:relative;border:1px solid var(--ln2);background:var(--pane);padding:26px 22px 22px;transition:border-color .25s,box-shadow .25s}
+.pane:hover{border-color:var(--g);box-shadow:0 0 0 1px #4af08a22,0 0 40px -10px #4af08a30}
+.pt{position:absolute;top:-10px;left:14px;background:var(--bg);padding:0 8px;font-size:12px;color:var(--mu);line-height:18px;white-space:nowrap;max-width:calc(100% - 28px);overflow:hidden;text-overflow:ellipsis}
+.pt b{color:var(--g);font-weight:500}
+.pane:hover .pt{color:var(--hi)}
+.pr{position:absolute;top:-10px;right:14px;background:var(--bg);padding:0 8px;font-size:11px;color:var(--di);line-height:18px}
+.pane:hover .pr{color:var(--g)}
+
+/* typed command line heading */
+.cmd{font-size:14px;color:var(--mu);margin-bottom:14px;min-height:1.75em}
+.cmd .u{color:var(--g)}.cmd .h{color:var(--cyan)}
+.cmd .c{display:inline-block;width:8px;height:15px;background:var(--g);vertical-align:-2px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+h2{font:700 clamp(30px,4vw,50px)/1.05 var(--disp);color:var(--hi);letter-spacing:-.03em;margin-bottom:26px}
+h2 .k{color:var(--g)}
+
+/* hero tiles */
+.tiles{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:1fr auto;gap:22px;min-height:calc(100vh - 70px);padding-top:10px}
+.tiles>.pane:first-child{grid-row:span 2;display:flex;flex-direction:column;justify-content:center}
+.ps{color:var(--g)}.ps i{font-style:normal;color:var(--cyan)}
+.name{font:700 clamp(46px,6.4vw,96px)/.95 var(--disp);letter-spacing:-.045em;color:var(--hi);margin:10px 0 22px}
+.name span{color:var(--g)}
+.out{color:var(--mu);margin:4px 0 16px;max-width:600px;font-size:15.5px}
+.out strong{color:var(--hi);font-weight:500}
+.role{color:var(--amber)}
+.hl{opacity:0;transition:opacity .5s}
+.hl.on{opacity:1}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.b{font:500 14px var(--mono);color:var(--text);text-decoration:none;padding:8px 12px;border:1px solid var(--ln2);background:var(--bg);transition:.15s}
+.b::before{content:"[ ";color:var(--di)}.b::after{content:" ]";color:var(--di)}
+.b:hover{color:#000;background:var(--g);border-color:var(--g)}
+.b:hover::before,.b:hover::after{color:#000}
+.b.p{color:var(--g);border-color:#4af08a66}
+.frame{position:relative;aspect-ratio:16/9;background:#040605;border:1px solid var(--ln)}
+.frame canvas{position:absolute;inset:0;width:100%;height:100%}
+.fi{font-size:12px;color:var(--mu);margin-top:8px}
+.cvp{display:flex;flex-direction:column}.cvp .frame{flex:1;min-height:220px;aspect-ratio:auto}
+#chart{width:100%;height:120px;display:block}
+.kv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.kv div{border-left:2px solid var(--ln2);padding-left:10px}
+.kv span{display:block;font-size:10.5px;color:var(--di);letter-spacing:1px}
+.kv b{font-size:20px;color:var(--hi);font-weight:700}
+
+/* about */
+.two{display:grid;grid-template-columns:1.3fr 1fr;gap:22px}
+.md p{color:var(--mu);margin-bottom:14px;font-size:15.5px}
+.md p strong{color:var(--hi);font-weight:500}
+.md .hh{color:var(--di)}
+.md .hh b{color:var(--hi);font-family:var(--disp);font-size:22px;font-weight:700}
+.neo{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;font-size:14px}
+.neo dt{color:var(--cyan)}
+.neo dd{color:var(--text)}
+.neo dd .g{color:var(--g)}
+.logo-ascii{color:var(--g);font-size:10px;line-height:1.15;margin-bottom:14px;white-space:pre;opacity:.85}
+
+/* htop skills */
+.htop .hr{display:grid;grid-template-columns:200px 1fr 70px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--ln)}
+.htop .hr:last-child{border-bottom:0}
+.htop .lb{color:var(--cyan);font-size:14px}
+.htop .lb small{display:block;color:var(--di);font-size:11.5px}
+.meter{font-size:14px;color:var(--di);white-space:nowrap;overflow:hidden}
+.meter i{font-style:normal;color:var(--c,var(--g))}
+.htop .ct{text-align:right;font-size:13px;color:var(--mu)}
+.htop .chips{grid-column:2/4;display:flex;flex-wrap:wrap;gap:6px 6px;margin-top:-2px}
+.chips span{font-size:13px;color:var(--text);border:1px solid var(--ln2);padding:2px 9px;transition:.15s;cursor:default}
+.chips span:hover{border-color:var(--c,var(--g));color:var(--c,var(--g))}
+.htop .hr.new{background:linear-gradient(90deg,#4af08a10,transparent 70%);margin:0 -22px;padding:14px 22px;border-left:3px solid var(--g)}
+.htop .hr.new .lb{color:var(--g)}
+.nb{display:inline-block;background:var(--g);color:#000;font-size:10px;font-weight:700;padding:0 5px;margin-left:6px;vertical-align:1px}
+.hh2{display:grid;grid-template-columns:200px 1fr 70px;gap:16px;font-size:11px;color:#000;background:var(--g);padding:2px 8px;margin:0 -8px 4px;letter-spacing:1px}
+
+/* projects */
+.pg{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.pg .pane{display:flex;flex-direction:column}
+.pg h3{font:700 22px/1.2 var(--disp);color:var(--hi);margin-bottom:8px;letter-spacing:-.015em}
+.pg p{color:var(--mu);font-size:14.5px;flex:1;margin-bottom:14px}
+.pg .tg{font-size:12.5px;color:var(--cyan);margin-bottom:12px}
+.pg .ft{display:flex;justify-content:space-between;font-size:12.5px;color:var(--di);border-top:1px dashed var(--ln2);padding-top:10px}
+.pg .ft b{color:var(--g);font-weight:500}
+.pg .ft a{color:var(--g);text-decoration:none}.pg .ft a:hover{text-decoration:underline}
+.pg .pt .det{display:none;color:#000;background:var(--g);padding:0 4px}
+.pg .pane:hover .pt .nm{display:none}.pg .pane:hover .pt .det{display:inline}
+.pg .bb{position:absolute;inset:8px;pointer-events:none;opacity:0;transition:opacity .25s}
+.pg .bb::before,.pg .bb::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--g)}
+.pg .bb::before{top:0;left:0;border-width:2px 0 0 2px}.pg .bb::after{bottom:0;right:0;border-width:0 2px 2px 0}
+.pg .pane:hover .bb{opacity:1}
+
+/* edu */
+.gl .c{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:6px 0 26px}
+.gl .c:last-child{padding-bottom:0}
+.gl .gr{color:var(--amber);white-space:pre;line-height:1.75}
+.gl .hs{color:var(--amber);font-size:13px}
+.gl .hs em{font-style:normal;color:var(--g)}
+.gl h3{font:700 23px var(--disp);color:var(--hi);margin:2px 0}
+.gl .s{color:var(--mu);font-size:14.5px}
+.gl .bd{color:var(--di);font-size:14px;margin:6px 0 10px}
+.gl .gp{font-size:13px;color:var(--text)}
+.gl .gp i{font-style:normal;color:var(--g)}
+
+/* contact */
+.big{font:700 clamp(50px,9vw,130px)/.9 var(--disp);letter-spacing:-.05em;color:var(--hi);margin:6px 0 20px}
+.big span{color:var(--g)}
+.shell{border:1px solid var(--ln);background:#050706;padding:14px 16px;font-size:14.5px;min-height:170px;cursor:text}
+.shell .ln{white-space:pre-wrap;color:var(--mu)}
+.shell .ln a{color:var(--cyan)}
+.shell .ln.ok{color:var(--g)}
+.shell form{display:flex;gap:8px}
+.shell input{flex:1;background:transparent;border:0;color:var(--hi);font:inherit;outline:none;caret-color:var(--g);min-width:0}
+
+/* tmux status */
+.st{position:fixed;left:0;right:0;bottom:0;z-index:60;height:28px;display:flex;align-items:center;background:var(--g);color:#000;font-size:12.5px;overflow:hidden}
+.st .ses{background:#000;color:var(--g);padding:0 10px;height:100%;display:flex;align-items:center;font-weight:700}
+.st .wins{display:flex;height:100%}
+.st .wins a{padding:0 10px;display:flex;align-items:center;text-decoration:none;color:#053;white-space:nowrap}
+.st .wins a.on{background:#000;color:var(--hi)}
+.st .wins a.on::after{content:"*";color:var(--g)}
+.st .r{margin-left:auto;display:flex;height:100%}
+.st .r span{padding:0 10px;display:flex;align-items:center;border-left:1px solid #00000030;white-space:nowrap}
+.st .r b{font-weight:700}
+
+.rv{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:980px){
+  .tiles{grid-template-columns:1fr;min-height:0}.tiles>.pane:first-child{grid-row:auto;min-height:calc(88vh - 40px)}
+  .two,.pg{grid-template-columns:1fr}
+  .htop .hr,.hh2{grid-template-columns:1fr 60px}.htop .meter{grid-column:1/3;order:3}.htop .chips{grid-column:1/3;order:4}
+  .hh2 span:nth-child(2){display:none}
+  .st .r .hide,.st .wins a:not(.on){display:none}
+  .kv{grid-template-columns:repeat(2,1fr)}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.hl{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="bgc"></canvas>
+<main>
+
+<section id="hero" data-name="0:hero">
+  <div class="tiles">
+    <div class="pane">
+      <span class="pt"><b>0</b> ~/rvk — zsh</span><span class="pr">120×40</span>
+      <div class="ps">rvk<i>@nyu</i>:~$ <span id="c1"></span></div>
+      <div class="hl" id="o1"><h1 class="name">Ritvik <span>Vasantha</span><br>Kumar</h1></div>
+      <div class="ps hl" id="p2">rvk<i>@nyu</i>:~$ <span id="c2"></span></div>
+      <div class="out hl" id="o2">→ <span class="role" id="role"></span><span class="cmd"><span class="c"></span></span></div>
+      <div class="out hl" id="o3"><strong>MS Computer Science @ NYU Tandon.</strong> Building multi-agent LLM systems, generative AI, perception pipelines and cloud-native ML. Open to AI / ML / CV roles.</div>
+      <div class="btns hl" id="o4">
+        <a class="b p" href="#projects">./work</a>
+        <a class="b" href="https://github.com/ritvikvk-ai" target="_blank" rel="noopener">github</a>
+        <a class="b" href="https://linkedin.com/in/ritvik-vk" target="_blank" rel="noopener">linkedin</a>
+        <a class="b" href="mailto:rv2459@nyu.edu" data-copy="rv2459@nyu.edu">email</a>
+      </div>
+      <div class="out hl" id="o5" style="font-size:12.5px;color:var(--di);margin-top:20px">keys: 1–6 switch window · ⌘K command menu</div>
+    </div>
+    <div class="pane cvp"><span class="pt"><b>1</b> cv_track.py --source cam_01</span><span class="pr" id="fps">● live</span>
+      <div class="frame"><canvas id="cv"></canvas></div><div class="fi" id="cvi"></div>
+    </div>
+    <div class="pane"><span class="pt"><b>2</b> watch -n1 skill_index</span><span class="pr" id="last">—</span>
+      <canvas id="chart"></canvas>
+      <div class="kv"><div><span>GPA</span><b data-n="3.7" data-d="1">0</b></div><div><span>HACKS</span><b data-n="4" data-s="+">0</b></div><div><span>PROJECTS</span><b data-n="8" data-s="+">0</b></div><div><span>TOOLS</span><b data-n="55" data-s="+">0</b></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="about" data-name="1:about">
+  <div class="two">
+    <div class="pane md rv"><span class="pt"><b>3</b> about.md</span>
+      <div class="cmd" data-cmd="cat about.md"></div>
+      <h2>Building at the <span class="k">frontier</span>.</h2>
+      <p>I'm a Master's student in Computer Science at <strong>NYU Tandon School of Engineering</strong>, specializing in AI, machine learning and generative systems. My work lives where applied research meets real product engineering.</p>
+      <p>I've built <strong>agentic coding assistants</strong>, <strong>multimodal story engines</strong>, <strong>RAG pipelines for robotics</strong>, <strong>perception pipelines</strong> and <strong>financial anomaly detection</strong>, always connecting cutting-edge models to deployable software.</p>
+      <p style="margin:0">Currently exploring multi-agent systems, LLM orchestration, open-vocabulary vision and cloud-native AI.</p>
+    </div>
+    <div class="pane rv"><span class="pt"><b>4</b> neofetch</span>
+      <div class="cmd" data-cmd="neofetch"></div>
+<div class="logo-ascii" aria-hidden="true"> ██████╗ ██╗   ██╗██╗  ██╗
+ ██╔══██╗██║   ██║██║ ██╔╝
+ ██████╔╝██║   ██║█████╔╝
+ ██╔══██╗╚██╗ ██╔╝██╔═██╗
+ ██║  ██║ ╚████╔╝ ██║  ██╗
+ ╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝</div>
+      <dl class="neo">
+        <dt>user</dt><dd>ritvik@nyu</dd>
+        <dt>os</dt><dd>MS CS · NYU Tandon</dd>
+        <dt>shell</dt><dd>python · c++ · sql</dd>
+        <dt>uptime</dt><dd id="up">—</dd>
+        <dt>focus</dt><dd>agents · genai · <span class="g">vision</span></dd>
+        <dt>loc</dt><dd>Brooklyn, NY</dd>
+        <dt>status</dt><dd class="g" style="color:var(--g)">● open to work</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="skills" data-name="2:skills">
+  <div class="pane htop rv"><span class="pt"><b>5</b> htop --sort=recent</span><span class="pr" id="tot"></span>
+    <div class="cmd" data-cmd="htop --skills"></div>
+    <h2>Skill <span class="k">stack</span>.</h2>
+    <div class="hh2"><span>PROCESS</span><span>LOAD</span><span style="text-align:right">N</span></div>
+    <div id="sk"></div>
+  </div>
+</section>
+
+<section id="projects" data-name="3:work">
+  <div class="cmd rv" data-cmd="ls -la ~/projects  # hover a pane to detect"></div>
+  <div class="pg" id="pg"></div>
+</section>
+
+<section id="education" data-name="4:edu">
+  <div class="pane gl rv"><span class="pt"><b>12</b> git log --graph education</span>
+    <div class="cmd" data-cmd="git log --graph --education"></div>
+    <h2>Academic <span class="k">path</span>.</h2>
+    <div id="gl"></div>
+  </div>
+</section>
+
+<section id="contact" data-name="5:contact">
+  <div class="two">
+    <div class="pane rv"><span class="pt"><b>13</b> contact</span>
+      <div class="cmd" data-cmd="echo $NEXT"></div>
+      <div class="big">Let's <span>build.</span></div>
+      <div style="color:var(--amber);font-size:14px">AI Engineer · ML Engineer · Computer Vision · Applied AI</div>
+      <div class="btns" style="margin-top:20px">
+        <a class="b p" href="mailto:rv2459@nyu.edu" data-copy="rv2459@nyu.edu">rv2459@nyu.edu</a>
+        <a class="b" href="https://linkedin.com/in/ritvik-vk" target="_blank" rel="noopener">linkedin</a>
+        <a class="b" href="https://github.com/ritvikvk-ai" target="_blank" rel="noopener">github</a>
+      </div>
+    </div>
+    <div class="pane rv"><span class="pt"><b>14</b> interactive shell — try it</span>
+      <div class="shell" id="sh"><div id="shout"><div class="ln">type <span style="color:var(--g)">help</span> and press enter</div></div>
+        <form id="shf"><span class="ps">rvk<i>@nyu</i>:~$</span><input id="shi" aria-label="terminal input" autocomplete="off" spellcheck="false"></form></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="st">
+  <span class="ses">[rvk]</span>
+  <nav class="wins"><a href="#hero" data-s="hero">1:hero</a><a href="#about" data-s="about">2:about</a><a href="#skills" data-s="skills">3:skills</a><a href="#projects" data-s="projects">4:work</a><a href="#education" data-s="education">5:edu</a><a href="#contact" data-s="contact">6:contact</a></nav>
+  <span class="r"><span class="hide">epoch <b id="ep">1/6</b>&nbsp;loss <b id="loss">.93</b></span><span class="hide" id="mk"></span><span id="clk"></span></span>
+</div>
+
+<script>/*@COMMON*/</script>
+<script>
+const R=RVK,sl=ms=>new Promise(r=>setTimeout(r,ms));
+async function type(el,t,sp=42){if(R.reduce){el.textContent=t;return}for(const c of t){el.textContent+=c;await sl(sp+Math.random()*30)}}
+const on=id=>document.getElementById(id).classList.add('on');
+(async()=>{await sl(250);await type(c1,'whoami');on('o1');await sl(350);on('p2');await type(c2,'cat role.txt');on('o2');on('o3');await sl(150);on('o4');on('o5');R.typeRoles(role)})();
+
+R.cvDemo(cv,cvi,{bg:'#040605',ink:'#28322d',line:'#4af08a10',cols:['#4af08a','#59d6ff','#ffc04d','#ff6ac1']});
+R.chart(chart,{col:'#4af08a',grid:'#4af08a12',onTick:(v,d)=>{last.innerHTML=`${v.toFixed(2)} <span style="color:${d>=0?'var(--g)':'var(--red)'}">${d>=0?'▲':'▼'}${Math.abs(d).toFixed(2)}</span>`}});
+
+/* htop */
+const max=Math.max(...R.skills.map(s=>s.items.length));const cols=['#59d6ff','#4af08a','#ffc04d','#ff6ac1','#b48cff','#59d6ff'];
+sk.innerHTML=R.skills.map((s,i)=>{const n=Math.round(s.items.length/max*40),c=s.isNew?'#4af08a':cols[i];
+ return `<div class="hr ${s.isNew?'new':''}" style="--c:${c}"><span class="lb">${s.k}${s.isNew?'<span class="nb">NEW</span>':''}<small>${s.sub}</small></span><span class="meter">[<i data-bar="${n}"></i>${'&nbsp;'.repeat(0)}<span class="pad" data-pad="${40-n}"></span>]</span><span class="ct">${s.items.length}</span><div class="chips">${s.items.map(x=>`<span>${x}</span>`).join('')}</div></div>`}).join('');
+tot.textContent=R.skills.reduce((a,s)=>a+s.items.length,0)+' procs';
+/* animate meters on reveal */
+function fillMeters(){document.querySelectorAll('[data-bar]').forEach((el,k)=>{const n=+el.dataset.bar,pad=el.nextElementSibling;let i=0;
+ const step=()=>{el.textContent='|'.repeat(i);pad.textContent=' '.repeat(+pad.dataset.pad+(n-i));if(i++<n)setTimeout(step,R.reduce?0:18)};setTimeout(step,k*90)})}
+new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){fillMeters();o.disconnect()}},{threshold:.2}).observe(sk);
+document.querySelectorAll('.pad').forEach(p=>p.textContent=' '.repeat(+p.dataset.pad+ +p.previousElementSibling.dataset.bar));
+document.querySelectorAll('.meter').forEach(m=>m.style.whiteSpace='pre');
+
+/* projects */
+pg.innerHTML=R.projects.map((p,i)=>`<article class="pane rv"><span class="pt"><b>${6+i}</b> <span class="nm">${p.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-$/,'')}/</span><span class="det">${p.lbl} ${p.conf.toFixed(2)}</span></span><span class="pr">${p.hash}</span><div class="bb"></div>
+ <div style="font-size:12px;color:var(--amber);margin-bottom:8px">${p.org}</div><h3>${p.title}</h3><p>${p.desc}</p><div class="tg">${p.tags.map(t=>'#'+t.toLowerCase().replace(/\s+/g,'-')).join('  ')}</div>
+ <div class="ft"><span>${p.m[0]}: <b>${p.m[1]}</b></span>${p.link?`<a href="${p.link}" target="_blank" rel="noopener">git clone ↗</a>`:'<span>private repo</span>'}</div></article>`).join('');
+
+/* edu */
+gl.innerHTML=R.edu.map((e,i)=>`<div class="c"><span class="gr">${i?'*':'*'}\n|\n|\n${i?' ':'|'}</span><div><div class="hs">commit ${i?'b7e21c4':'f3a9d10'} ${i?'':'<em>(HEAD → main)</em>'} · ${e.when}</div><h3>${e.school}</h3><div class="s">${e.sub}</div><div class="bd">${e.body}</div><div class="gp">${e.g.split(' ')[0]} <i>${e.g.split(' ').slice(1).join(' ')}</i></div></div></div>`).join('');
+
+/* typed section commands */
+const cio=new IntersectionObserver(es=>es.forEach(async e=>{if(!e.isIntersecting)return;cio.unobserve(e.target);const el=e.target;el.innerHTML='<span class="u">rvk@nyu</span>:<span class="h">~</span>$ <span class="t"></span><span class="c"></span>';await type(el.querySelector('.t'),el.dataset.cmd,28)}),{threshold:.6});
+document.querySelectorAll('[data-cmd]').forEach(e=>cio.observe(e));
+
+/* uptime since NYU start */
+const t0=new Date('2024-09-01');setInterval(()=>{const s=(Date.now()-t0)/1000;up.textContent=`${Math.floor(s/86400)}d ${Math.floor(s%86400/3600)}h ${Math.floor(s%3600/60)}m ${Math.floor(s%60)}s`},1000);
+
+/* interactive shell */
+const cmds={help:()=>'commands: whoami · skills · projects · email · github · linkedin · cv · clear · sudo hire-me',
+ whoami:()=>'Ritvik Vasantha Kumar — AI Engineer, MS CS @ NYU Tandon',skills:()=>R.skills.map(s=>`${s.k.padEnd(18)} ${s.items.slice(0,4).join(', ')}…`).join('\n'),
+ projects:()=>R.projects.map(p=>`${p.hash}  ${p.title}`).join('\n'),cv:()=>'computer_vision: '+R.skills[1].items.join(', '),
+ email:()=>{navigator.clipboard&&navigator.clipboard.writeText('rv2459@nyu.edu');return '<a href="mailto:rv2459@nyu.edu">rv2459@nyu.edu</a> (copied ✓)'},
+ github:()=>{open('https://github.com/ritvikvk-ai','_blank','noopener');return 'opening github.com/ritvikvk-ai …'},linkedin:()=>{open('https://linkedin.com/in/ritvik-vk','_blank','noopener');return 'opening linkedin …'},
+ 'sudo hire-me':()=>'[sudo] password for recruiter: ******\n✓ permission granted — email rv2459@nyu.edu',clear:()=>{shout.innerHTML='';return null}};
+sh.onclick=()=>shi.focus();
+shf.onsubmit=e=>{e.preventDefault();const v=shi.value.trim();shi.value='';if(!v)return;shout.insertAdjacentHTML('beforeend',`<div class="ln"><span class="ps">$</span> ${v.replace(/</g,'&lt;')}</div>`);
+ const f=cmds[v.toLowerCase()];const r=f?f():`zsh: command not found: ${v.replace(/</g,'&lt;')} — try help`;if(r!==null)shout.insertAdjacentHTML('beforeend',`<div class="ln ${f?'ok':''}">${r}</div>`);sh.scrollTop=sh.scrollHeight};
+
+R.reveal();setTimeout(()=>R.counters(document.querySelector('.tiles')),600);R.copyable();R.crosshair();R.activeNav('.wins a');
+R.tracks(bgc,{cols:['#4af08a','#59d6ff'],dot:'#4af08a22',max:22});
+R.palette();
+R.clock(clk,({t})=>t.slice(0,5)+' ET');R.clock(mk,({open})=>`NYSE ${open?'▲ open':'■ closed'}`);
+R.epoch(({ep,n,loss})=>{document.getElementById('ep').textContent=ep+'/'+n;document.getElementById('loss').textContent=loss});
+const ids=['hero','about','skills','projects','education','contact'];
+addEventListener('keydown',e=>{if(document.activeElement.tagName==='INPUT'||e.metaKey||e.ctrlKey||e.altKey)return;const n=+e.key;if(n>=1&&n<=6)document.getElementById(ids[n-1]).scrollIntoView({behavior:'smooth'})});
+</script>
+</body>
+</html>
