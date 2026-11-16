@@ -229,7 +229,7 @@ window.VIS = (() => {
         cx.fillStyle = act ? '#c8ff2e' : '#15181c'; cx.strokeStyle = act ? '#c8ff2e' : '#5d6570'; cx.beginPath(); cx.arc(p[0], p[1], act ? 9 : 7, 0, 7); cx.fill(); cx.stroke();
         cx.fillStyle = act ? '#fafbfc' : '#8e96a1'; cx.font = `11px ${MONO}`; cx.fillText(N[i], p[0] - 22, p[1] + (i % 2 ? -16 : 24));
       });
-      cx.fillStyle = '#fff'; cx.shadowColor = '#c8ff2e'; cx.shadowBlur = 10; cx.beginPath(); cx.arc(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, 3, 0, 7); cx.fill(); cx.shadowBlur = 0;
+      cx.fillStyle = '#fff'; cx.beginPath(); cx.arc(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, 3, 0, 7); cx.fill();
     },
     voice(cx, w, h, t) {
       const n = 48, bw = w * .6 / n;
