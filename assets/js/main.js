@@ -160,9 +160,7 @@
   });
   if (G && !reduce) ScrollTrigger.batch('.pc', { start: 'top 88%', once: true, onEnter: b => G.fromTo(b, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: .12, overwrite: true }) });
 
-  // education: rail draws with scroll; dots + bars light up
-  if (G && !reduce) G.to('#rail', { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '#tl', start: 'top 70%', end: 'bottom 55%', scrub: .6 } });
-  else $('#rail').style.transform = 'scaleY(1)';
+  // education: entries fade in; the MS line is static (CSS)
   $$('.ti').forEach(t => onEnter(t, e => { e.classList.add('in'); if (G && !reduce) G.from(e.children, { opacity: 0, x: 24, duration: .8, ease: 'power3.out', stagger: .07 }); }, 'top 78%'));
 
   // contact: heading rises in letter by letter
@@ -202,11 +200,8 @@
     $$('section[id]').forEach(s => io.observe(s));
   })();
 
-  /* ───────── cursor glow, magnetic buttons ───────── */
+  /* ───────── magnetic buttons ───────── */
   if (fine && !reduce) {
-    const glow = $('#glow'); let x = -999, y = -999, gx = x, gy = y;
-    addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; }, { passive: true });
-    (function f() { gx += (x - gx) * .06; gy += (y - gy) * .06; glow.style.setProperty('--gx', gx + 'px'); glow.style.setProperty('--gy', gy + 'px'); requestAnimationFrame(f); })();
     $$('.mag').forEach(b => {
       const tx = G ? G.quickTo(b, 'x', { duration: .5, ease: 'power3' }) : null, ty = G ? G.quickTo(b, 'y', { duration: .5, ease: 'power3' }) : null;
       b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(), dx = e.clientX - r.left, dy = e.clientY - r.top; b.style.setProperty('--bx', dx + 'px'); b.style.setProperty('--by', dy + 'px'); if (tx) { tx((dx - r.width / 2) * .28); ty((dy - r.height / 2) * .35); } });
